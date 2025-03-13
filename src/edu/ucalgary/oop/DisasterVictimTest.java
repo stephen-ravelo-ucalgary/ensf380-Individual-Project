@@ -11,11 +11,21 @@ public class DisasterVictimTest {
     private DisasterVictim victim;
     private String firstName = "Stephen";
     private String EXPECTED_ENTRY_DATE = "2025-01-18";
+    private Location location;
+    private ArrayList<MedicalRecord> recordsToTest;
+    private ArrayList<Supply> suppliesToTest;
 
     @Before
-    public void setUp
-    {
+    public void setUp() {
         victim = new DisasterVictim(firstName, EXPECTED_ENTRY_DATE);
+
+        location = new Location("locationName", "locationAddress");
+
+        recordsToTest = new ArrayList<MedicalRecord>();
+        recordsToTest.add(new MedicalRecord(location, "treatmentDetails", "2025-03-12"));
+
+        suppliesToTest = new ArrayList<Supply>();
+        suppliesToTest.add(new Blanket(1));
     }
 
     @Test
@@ -66,45 +76,86 @@ public class DisasterVictimTest {
     }
 
     @Test
-    public void testSetAndGetMedicalRecords() {
-        ArrayList<MedicalRecord> expectedMedicalRecords = new ArrayList<MedicalRecord>();
-        Location location = new Location("Location", "Address");
-        MedicalRecord medicalRecord = new MedicalRecord(location, "Treatment details", "2025-03-12");
-        
-        expectedMedicalRecords.add(medicalRecord);
-        victim.setMedicalRecords(expectedMedicalRecords);
-        
-        MedicalRecord actualMedicalRecords = victim.getMedicalRecords();
-        
-        assertEquals("setMedicalRecords should update and getMedicalRecords should return the new medical records", expectedMedicalRecords, victim.getMedicalRecords());
-    }
-
-    @Test
     public void testSetAndGetPersonalBelongings() {
-        ArrayList<Supply> expectedSupplies = new ArrayList<Supply>();
-        Supply supply = new Blanket(1);
-        
-        expectedSupplies.add(supply);
-        victim.setPersonalBelongings(expectedSupplies);
-        
-        Supply actualSupplies = victim.getPersonalBelongings();
-        
-        assertEquals("setPersonalBelongings should update and getPersonalBelongings should return the new supplies", expectedSupplies, victim.getPersonalBelongings());
+        victim.setPersonalBelongings(suppliesToTest);
+        ArrayList<Supply> actualSupplies = victim.getPersonalBelongings();
+
+        boolean correct = true;
+        if (suppliesToTest.size() != actualSupplies.size()) {
+            correct = false;
+        } else {
+            int i;
+            for (i = 0; i < actualSupplies.size(); i++) {
+                if (suppliesToTest.get(i) != actualSupplies.get(i)) {
+                    correct = false;
+                }
+            }
+        }
+        assertTrue("Supplies should be set", correct);
+        assertEquals("getSupplies should return the new supplies", suppliesToTest, actualSupplies);
     }
 
     @Test
     public void testAddPersonalBelonging() {
         Supply newSupply = new PersonalBelonging("Emergency Kit", 1);
         victim.addPersonalBelonging(newSupply);
+
         ArrayList<Supply> testSupplies = victim.getPersonalBelongings();
         boolean correct = false;
-
         int i;
-        for (i = 0; i < testSupplies.length; i++) {
-            if (testSupplies[i] == newSupply) {
+        for (i = 0; i < testSupplies.size(); i++) {
+            if (testSupplies.get(i) == newSupply) {
                 correct = true;
             }
         }
         assertTrue("addPersonalBelonging should add the supply to personal belongings", correct);
+    }
+
+    @Test
+    public void testRemovePersonalBelonging() {
+        Supply supply1 = new Blanket(1);
+        Supply supply2 = new Blanket(1);
+
+        ArrayList<Supply> expectedSupplies = new ArrayList<Supply>()
+        expectedSupplies.add(supply1);
+        expectedSupplies.add(supply2);
+        
+        victim.addPersonalBelonging(supply1);
+        victim.addPersonalBelonging(supply2);
+        victim.removePersonalBelonging(supply2);
+
+        ArrayList<Supply> testSupplies = victim.getPersonalBelongings();
+        
+        boolean correct = true;
+        int i;
+        for (i = 0; i < testSupplies.size(); i++) {
+            if (testSupplies.get(i) == supply2) {
+                correct = false;
+            }
+        }
+        assertTrue("removePersonalBelonging should remove the supply from personal belongings", correct);
+    }
+
+    @Test
+    public void testAddMedicalRecord() {
+        Location location = new Location("Location", "Address");
+        MedicalRecord newRecord = new MedicalRecord(location, "Treatment details", "2025-03-12");
+        victim.addMedicalRecord(newRecord);
+
+        ArrayList<MedicalRecord> testRecords = victim.getMedicalRecords();
+        boolean correct = false;
+        int i;
+        for (i = 0; i < testRecords.size(); i++) {
+            if (testRecords.get() == newRecord) {
+                correct = true;
+            }
+        }
+        assertTrue("addMedicalRecord should add the record to medical records", correct);
+    }
+
+    @Test
+    public void getEntryDate() {
+        assertEquals("getEntryDate should return the initial correct entry date", EXPECTED_ENTRY_DATE,
+                victim.getEntryDate());
     }
 }
