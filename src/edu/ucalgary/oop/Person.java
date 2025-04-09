@@ -4,17 +4,19 @@ public class Person {
     private String firstName;
     private String lastName;
     private String dateOfBirth;
-    private int assignedSocialID;
+    private final int ASSIGNED_SOCIAL_ID;
     private String gender;
     private String comments;
     private String phoneNumber;
     private int familyGroup;
 
-    public Person(String firstName) {
+    public Person( int ASSIGNED_SOCIAL_ID, String firstName) {
+        this.ASSIGNED_SOCIAL_ID = ASSIGNED_SOCIAL_ID;
         this.firstName = firstName;
     }
 
-    public Person(String firstName, String dateOfBirth) throws IllegalArgumentException {
+    public Person(int ASSIGNED_SOCIAL_ID, String firstName, String dateOfBirth) throws IllegalArgumentException {
+        this.ASSIGNED_SOCIAL_ID = ASSIGNED_SOCIAL_ID;
         this.firstName = firstName;
         if (!isValidDateFormat(dateOfBirth)) {
             throw new IllegalArgumentException("Invalid date format for entry date. Expected format: YYYY-MM-DD");
@@ -100,12 +102,8 @@ public class Person {
         return phoneNumber.matches(dateFormatPattern);
     }
 
-    public int getAssignedSocialID() {
-        return assignedSocialID;
-    }
-
-    public void setAssignedSocialID(int assignedSocialID) {
-        this.assignedSocialID = assignedSocialID;
+    public int getASSIGNED_SOCIAL_ID() {
+        return ASSIGNED_SOCIAL_ID;
     }
 }
 

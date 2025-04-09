@@ -16,13 +16,18 @@ import java.util.HashMap;
 public class Controller {
     private View view;
     private DisasterVictimDB db;
-    private int currHighestSocialID = 1;
+
+    private int currHighestSocialID = 0;
+    private int currHighestMedicalRecordID = 0;
+    private int currHighestLocationID = 0;
+    private int currHighestInquiryID = 0;
 
     private ArrayList<MedicalRecord> currMedicalRecords;
 
-    private Map<String, Location> locations = new HashMap<String, Location>();
-    private Map<Integer, DisasterVictim> disasterVictims = new HashMap<Integer, DisasterVictim>();
-    private Map<Integer, MedicalRecord> medicalRecords = new HashMap<Integer, MedicalRecord>();
+    private Map<Integer, Location> locations = new HashMap<>();
+    private Map<Integer, DisasterVictim> disasterVictims = new HashMap<>();
+    private Map<Integer, MedicalRecord> medicalRecords = new HashMap<>();
+    private Map<Integer, Inquiry> inquiries = new HashMap<>();
 
     public Controller(View view) {
         this.view = view;
@@ -32,14 +37,31 @@ public class Controller {
         locations = db.selectAllLocations();
         disasterVictims = db.selectAllPeople();
         medicalRecords = db.selectAllMedicalRecords();
+        inquiries = db.selectAllInquiries();
         db.close();
 
         currMedicalRecords = new ArrayList<MedicalRecord>();
 
+        // Set current highest IDs in database
         for (DisasterVictim disasterVictim : disasterVictims.values().toArray(new DisasterVictim[0])) {
-            System.out.println(disasterVictim.getAssignedSocialID() + ". " + disasterVictim.getFirstName());
-            if (disasterVictim.getAssignedSocialID() > currHighestSocialID) {
-                currHighestSocialID = disasterVictim.getAssignedSocialID();
+            System.out.println(disasterVictim.getASSIGNED_SOCIAL_ID() + ". " + disasterVictim.getFirstName());
+            if (disasterVictim.getASSIGNED_SOCIAL_ID() > currHighestSocialID) {
+                currHighestSocialID = disasterVictim.getASSIGNED_SOCIAL_ID();
+            }
+        }
+        for (MedicalRecord medicalRecord : medicalRecords.values().toArray(new MedicalRecord[0])) {
+            if (medicalRecord.getID() > currHighestMedicalRecordID) {
+                currHighestMedicalRecordID = medicalRecord.getID();
+            }
+        }
+        for (Location location : locations.values().toArray(new Location[0])) {
+            if (location.getID() > currHighestLocationID) {
+                currHighestLocationID = location.getID();
+            }
+        }
+        for (Inquiry inquiry : inquiries.values().toArray(new Inquiry[0])) {
+            if (inquiry.getID() > currHighestInquiryID) {
+                currHighestInquiryID = inquiry.getID();
             }
         }
 
@@ -48,11 +70,13 @@ public class Controller {
 
     public void initView() {
         updateLocations();
+        updatePeople();
     }
 
     public void initController() {
         view.getMainMenuUI().getCreateDisasterVictimEntryButton().addActionListener(e -> view.showDisasterVictimUI());
         view.getMainMenuUI().getCreateInquiryButton().addActionListener(e -> view.showInquiryUI());
+        view.getMainMenuUI().getAllocateSupplyButton().addActionListener(e -> view.showSupplyUI());
         view.getMainMenuUI().getAddLocationButton().addActionListener(e -> view.showLocationUI());
 
         view.getDisasterVictimUI().getMedicalRecordButton().addActionListener(e -> view.showMedicalRecordUI());
@@ -66,23 +90,50 @@ public class Controller {
         view.getInquiryUI().getAddLocationButton().addActionListener(e -> view.showLocationUI());
         view.getInquiryUI().getSubmitButton().addActionListener(e -> submitInquiryForm());
 
+        view.getSupplyUI().getMainMenuButton().addActionListener(e -> view.showMainMenuUI());
+        view.getSupplyUI().getAddPersonalBelongingButton().addActionListener(e -> view.showPersonalBelongingUI());
+
+        view.getPersonalBelongingUI().getBackButton().addActionListener(e -> view.showSupplyUI());
+        view.getPersonalBelongingUI().getSubmitButton().addActionListener(e -> submitPersonalBelonging());
+
         view.getLocationUI().getMainMenuButton().addActionListener(e -> view.showMainMenuUI());
         view.getLocationUI().getSubmitButton().addActionListener(e -> submitLocationForm());
     }
 
     private void reset() {
         view.getDisasterVictimUI().resetMedicalRecordCount();
+        currHighestMedicalRecordID -= currMedicalRecords.size();
         currMedicalRecords = new ArrayList<MedicalRecord>();
         view.showMainMenuUI();
     }
 
+    private void updatePeople() {
+        ArrayList<String> formattedPeople = new ArrayList<>();
+
+        for (DisasterVictim person : disasterVictims.values()) {
+            formattedPeople
+                    .add(person.getASSIGNED_SOCIAL_ID() + " " + person.getFirstName() + " " + person.getLastName());
+        }
+
+        view.getInquiryUI().getInquirerComboBox()
+                .setModel(new DefaultComboBoxModel<>(formattedPeople.toArray(new String[0])));
+        view.getInquiryUI().getMissingPersonComboBox()
+                .setModel(new DefaultComboBoxModel<>(formattedPeople.toArray(new String[0])));
+    }
+
     private void updateLocations() {
+        ArrayList<String> formatedLocations = new ArrayList<>();
+
+        for (Location location : locations.values()) {
+            formatedLocations.add(location.getID() + " " + location.getName());
+        }
+
         view.getDisasterVictimUI().getLocationComboBox()
-                .setModel(new DefaultComboBoxModel<String>(locations.keySet().toArray(new String[0])));
+                .setModel(new DefaultComboBoxModel<>(formatedLocations.toArray(new String[0])));
         view.getMedicalRecordUI().getLocationComboBox()
-                .setModel(new DefaultComboBoxModel<String>(locations.keySet().toArray(new String[0])));
+                .setModel(new DefaultComboBoxModel<>(formatedLocations.toArray(new String[0])));
         view.getInquiryUI().getLastKnownLocationComboBox()
-                .setModel(new DefaultComboBoxModel<String>(locations.keySet().toArray(new String[0])));
+                .setModel(new DefaultComboBoxModel<>(formatedLocations.toArray(new String[0])));
     }
 
     private void submitDisasterVictimForm() {
@@ -95,9 +146,11 @@ public class Controller {
         String comments = disasterVictimUI.getCommentsTextArea().getText();
         String phoneNumber = disasterVictimUI.getPhoneNumberTextField().getText();
         String familyGroup = disasterVictimUI.getFamilyGroupTextField().getText();
-        String location = disasterVictimUI.getLocationComboBox().getSelectedItem().toString();
+        int locationID = Integer
+                .valueOf(disasterVictimUI.getLocationComboBox().getSelectedItem().toString().split("\\s+")[0]);
 
-        DisasterVictim disasterVictim = new DisasterVictim(firstName, dateOfBirth);
+        currHighestSocialID++;
+        DisasterVictim disasterVictim = new DisasterVictim(currHighestSocialID, firstName, dateOfBirth);
 
         disasterVictim.setLastName(lastName);
         disasterVictim.setGender(gender);
@@ -105,14 +158,10 @@ public class Controller {
         disasterVictim.setPhoneNumber(phoneNumber);
         disasterVictim.setFamilyGroup(Integer.valueOf(familyGroup));
         disasterVictim.setMedicalRecords(currMedicalRecords);
-        disasterVictim.setLocation(locations.get(location));
-
-        // Assign and increment Social ID
-        currHighestSocialID++;
-        disasterVictim.setAssignedSocialID(currHighestSocialID);
+        disasterVictim.setLocation(locations.get(locationID));
 
         // Add new disaster victim to location
-        locations.get(location).addOccupant(disasterVictim);
+        locations.get(locationID).addOccupant(disasterVictim);
 
         disasterVictims.put(currHighestSocialID, disasterVictim);
 
@@ -126,7 +175,7 @@ public class Controller {
 
         System.out.println(disasterVictim.getLocation().getName());
         for (DisasterVictim guy : disasterVictims.values().toArray(new DisasterVictim[0])) {
-            System.out.println(guy.getAssignedSocialID() + ". " + guy.getFirstName());
+            System.out.println(guy.getASSIGNED_SOCIAL_ID() + ". " + guy.getFirstName());
         }
 
         view.showMainMenuUI();
@@ -139,7 +188,9 @@ public class Controller {
         String treatmentDetails = medicalRecordUI.getTreatmentDetailsTextArea().getText();
         String dateOfTreatment = medicalRecordUI.getDateOfTreatmentTextField().getText();
 
-        MedicalRecord medicalRecord = new MedicalRecord(locations.get(location), treatmentDetails, dateOfTreatment);
+        currHighestMedicalRecordID++;
+        MedicalRecord medicalRecord = new MedicalRecord(currHighestMedicalRecordID, locations.get(location),
+                treatmentDetails, dateOfTreatment);
 
         currMedicalRecords.add(medicalRecord);
 
@@ -153,9 +204,10 @@ public class Controller {
         String name = locationUI.getNameTextField().getText();
         String address = locationUI.getAddressTextField().getText();
 
-        Location location = new Location(name, address);
+        currHighestLocationID++;
+        Location location = new Location(currHighestLocationID, name, address);
 
-        locations.put(name, location);
+        locations.put(currHighestLocationID, location);
 
         updateLocations();
 
@@ -165,11 +217,28 @@ public class Controller {
     private void submitInquiryForm() {
         InquiryUI inquiryUI = view.getInquiryUI();
 
-        String inquirer = inquiryUI.getInquirerComboBox().getSelectedItem().toString().split("\\s+")[0];
-        String missingPerson = inquiryUI.getMissingPersonComboBox().getSelectedItem().toString().split("\\s+")[0];
+        int inquirerID = Integer.valueOf(inquiryUI.getInquirerComboBox().getSelectedItem().toString().split("\\s+")[0]);
+        int missingPersonID = Integer
+                .valueOf(inquiryUI.getMissingPersonComboBox().getSelectedItem().toString().split("\\s+")[0]);
         String dateOfInquiry = inquiryUI.getDateOfInquiryTextField().getText();
-        //String infoProv
+        String infoProvided = inquiryUI.getInfoProvidedTextArea().getText();
+        int lastKnownLocationID = Integer
+                .valueOf(inquiryUI.getLastKnownLocationComboBox().getSelectedItem().toString().split("\\s+")[0]);
 
-        // TODO
+        Person inquirerObject = disasterVictims.get(inquirerID);
+        DisasterVictim missingPersonObject = disasterVictims.get(missingPersonID);
+        Location location = locations.get(lastKnownLocationID);
+
+        currHighestInquiryID++;
+        Inquiry inquiry = new Inquiry(currHighestInquiryID, inquirerObject, missingPersonObject, dateOfInquiry,
+                infoProvided, location);
+
+        inquiries.put(currHighestInquiryID, inquiry);
+
+        view.showMainMenuUI();
+    }
+
+    private void submitPersonalBelonging() {
+
     }
 }

@@ -13,9 +13,11 @@ public class Location {
     private String address;
     private ArrayList<DisasterVictim> occupants = new ArrayList<>(); // Initialized
     private ArrayList<Supply> supplies = new ArrayList<>(); // Initialized
+    private final int ID;
 
     // Constructor
-    public Location(String name, String address) {
+    public Location(int ID, String name, String address) {
+        this.ID = ID;
         this.name = name;
         this.address = address;
     }
@@ -76,5 +78,9 @@ public class Location {
     // Remove a supply from supplies
     public void removeSupply(Supply supply) {
         supplies.remove(supply);
+    }
+
+    public int getID() {
+        return ID;
     }
 }

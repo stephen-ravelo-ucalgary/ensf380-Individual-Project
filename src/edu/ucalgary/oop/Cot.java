@@ -4,8 +4,8 @@ public class Cot extends Supply {
     private String room;
     private String grid;
 
-    public Cot(String room, String grid, int quantity) {
-        super("cot", quantity);
+    public Cot(int ID, String room, String grid, int quantity) {
+        super(ID, "cot", quantity);
         this.room = room;
         this.grid = grid;
     }

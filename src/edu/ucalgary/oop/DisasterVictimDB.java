@@ -70,24 +70,7 @@ public class DisasterVictimDB {
         return locations.toArray(new String[0]);
     }
 
-    public Map<String, Location> selectAllLocations() {
-        Map<String, Location> locations = new HashMap<String, Location>();
-        try {
-            Statement myStmt = dbConnect.createStatement();
-            results = myStmt.executeQuery("SELECT * FROM Location");
-
-            while (results.next()) {
-                locations.put(results.getString("name"),
-                        new Location(results.getString("name"), results.getString("address")));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return locations;
-    }
-    
-    public Map<Integer, Location> selectAllLocationsByID() {
+    public Map<Integer, Location> selectAllLocations() {
         Map<Integer, Location> locations = new HashMap<Integer, Location>();
         try {
             Statement myStmt = dbConnect.createStatement();
@@ -95,7 +78,8 @@ public class DisasterVictimDB {
 
             while (results.next()) {
                 locations.put(results.getInt("location_id"),
-                        new Location(results.getString("name"), results.getString("address")));
+                        new Location(results.getInt("location_id"), results.getString("name"),
+                                results.getString("address")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -113,12 +97,12 @@ public class DisasterVictimDB {
             while (results.next()) {
                 DisasterVictim person;
                 if (results.getString("date_of_birth") != null) {
-                    person = new DisasterVictim(results.getString("first_name"), results.getString("date_of_birth"));
+                    person = new DisasterVictim(results.getInt("person_id"), results.getString("first_name"),
+                            results.getString("date_of_birth"));
                 } else {
-                    person = new DisasterVictim(results.getString("first_name"));
+                    person = new DisasterVictim(results.getInt("person_id"), results.getString("first_name"));
                 }
 
-                person.setAssignedSocialID(results.getInt("person_id"));
                 person.setLastName(results.getString("last_name"));
                 if (results.getString("gender") != null) {
                     person.setGender(results.getString("gender"));
@@ -145,20 +129,47 @@ public class DisasterVictimDB {
             results = myStmt.executeQuery("SELECT * FROM MedicalRecord");
 
             while (results.next()) {
-                Map<Integer, Location> locations = new HashMap<Integer, Location>();
-                locations = selectAllLocationsByID();
-                
+                Map<Integer, Location> locations = selectAllLocations();
+
+                int ID = results.getInt("medical_record_id");
                 Location location = locations.get(results.getInt("location_id"));
                 String treatmentDetails = results.getString("treatment_details");
                 String dateOfTreatment = results.getString("date_of_treatment");
 
-                medicalRecords.put(results.getInt("person_id"), new MedicalRecord(location, treatmentDetails, dateOfTreatment));
+                medicalRecords.put(ID, new MedicalRecord(ID, location, treatmentDetails, dateOfTreatment));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return medicalRecords;
+    }
+
+    public Map<Integer, Inquiry> selectAllInquiries() {
+        Map<Integer, Inquiry> inquiries = new HashMap<>();
+        try {
+            Statement myStmt = dbConnect.createStatement();
+            results = myStmt.executeQuery("SELECT * FROM Inquiry");
+
+            while (results.next()) {
+                Map<Integer, Location> locations = selectAllLocations();
+                Map<Integer, DisasterVictim> people = selectAllPeople();
+
+                System.out.println(results.getString("inquirer_id"));
+                int ID = Integer.valueOf(results.getString("inquiry_id"));
+                Person inquirer = people.get(results.getInt("inquirer_id"));
+                DisasterVictim missingPerson = people.get(results.getInt("seeking_id"));
+                String dateOfInquiry = results.getString("date_of_inquiry");
+                String infoProvided = results.getString("comments");
+                Location location = locations.get(results.getInt("location_id"));
+
+                inquiries.put(ID, new Inquiry(ID, inquirer, missingPerson, dateOfInquiry, infoProvided, location));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return inquiries;
     }
 
     public static void main(String[] args) {

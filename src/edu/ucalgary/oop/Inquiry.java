@@ -12,9 +12,11 @@ public class Inquiry {
     private String dateOfInquiry;
     private String infoProvided;
     private Location lastKnownLocation;
+    private final int ID;
 
-    public Inquiry(Person inquirer, DisasterVictim missingPerson, String dateOfInquiry, String infoProvided,
+    public Inquiry(int ID, Person inquirer, DisasterVictim missingPerson, String dateOfInquiry, String infoProvided,
             Location lastKnownLocation) throws IllegalArgumentException {
+        this.ID = ID;
         this.inquirer = inquirer;
         this.missingPerson = missingPerson;
         setDateOfInquiry(dateOfInquiry);
@@ -27,12 +29,26 @@ public class Inquiry {
         return date.matches(dateFormatPattern);
     }
 
-    public Person getInquirer() { return inquirer; }
-    public void setInquirer(Person inquirer) { this.inquirer = inquirer; }
-    public DisasterVictim getMissingPerson() { return missingPerson; }
-    public void setMissingPerson(DisasterVictim missingPerson) { this.missingPerson = missingPerson; }
-    
-    public String getDateOfInquiry() { return dateOfInquiry; }
+    public Person getInquirer() {
+        return inquirer;
+    }
+
+    public void setInquirer(Person inquirer) {
+        this.inquirer = inquirer;
+    }
+
+    public DisasterVictim getMissingPerson() {
+        return missingPerson;
+    }
+
+    public void setMissingPerson(DisasterVictim missingPerson) {
+        this.missingPerson = missingPerson;
+    }
+
+    public String getDateOfInquiry() {
+        return dateOfInquiry;
+    }
+
     public void setDateOfInquiry(String dateOfInquiry) throws IllegalArgumentException {
         if (!isValidDateFormat(dateOfInquiry)) {
             throw new IllegalArgumentException("Invalid date format for date of inquiry. Expected format: YYYY-MM-DD");
@@ -40,13 +56,29 @@ public class Inquiry {
         this.dateOfInquiry = dateOfInquiry;
     }
 
-    public String getInfoProvided() { return infoProvided; }
-    public void setInfoProvided(String infoProvided) { this.infoProvided = infoProvided; }
-    public Location getLastKnownLocation() { return lastKnownLocation; }
-    public void setLastKnownLocation(Location lastKnownLocation) { this.lastKnownLocation = lastKnownLocation; }
+    public String getInfoProvided() {
+        return infoProvided;
+    }
+
+    public void setInfoProvided(String infoProvided) {
+        this.infoProvided = infoProvided;
+    }
+
+    public Location getLastKnownLocation() {
+        return lastKnownLocation;
+    }
+
+    public void setLastKnownLocation(Location lastKnownLocation) {
+        this.lastKnownLocation = lastKnownLocation;
+    }
 
     public String getLogDetails() {
         String str = "Inquirer: %s\nMissing Person: %s\nInfo: %s\nLast Known Location: %s";
-        return String.format(str, inquirer.getFirstName(), missingPerson.getFirstName(), infoProvided, lastKnownLocation.getName());
+        return String.format(str, inquirer.getFirstName(), missingPerson.getFirstName(), infoProvided,
+                lastKnownLocation.getName());
+    }
+
+    public int getID() {
+        return ID;
     }
 }

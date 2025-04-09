@@ -13,8 +13,10 @@ public class MedicalRecord {
     private Location location;
     private String treatmentDetails;
     private String dateOfTreatment;
+    private final int ID;
 
-    public MedicalRecord(Location location, String treatmentDetails, String dateOfTreatment) throws IllegalArgumentException {
+    public MedicalRecord(int ID, Location location, String treatmentDetails, String dateOfTreatment) throws IllegalArgumentException {
+        this.ID = ID;
         setLocation(location);
         this.treatmentDetails = treatmentDetails;
 
@@ -65,5 +67,9 @@ public class MedicalRecord {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public int getID() {
+        return ID;
     }
 }

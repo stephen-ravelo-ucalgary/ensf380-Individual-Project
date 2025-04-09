@@ -1,7 +1,7 @@
 package edu.ucalgary.oop;
 
 public class Blanket extends Supply {
-    public Blanket(int quantity) {
-        super("blanket", quantity);
+    public Blanket(int ID, int quantity) {
+        super(ID, "blanket", quantity);
     }
 }

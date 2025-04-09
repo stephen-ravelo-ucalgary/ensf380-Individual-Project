@@ -13,12 +13,12 @@ public class DisasterVictim extends Person {
     private ArrayList<Supply> personalBelongings = new ArrayList<Supply>();
     private Location location;
 
-    public DisasterVictim(String firstName) {
-        super(firstName);
+    public DisasterVictim(int ASSIGNED_SOCIAL_ID, String firstName) {
+        super(ASSIGNED_SOCIAL_ID, firstName);
     }
 
-    public DisasterVictim(String firstName, String dateOfBirth) throws IllegalArgumentException {
-        super(firstName);
+    public DisasterVictim(int ASSIGNED_SOCIAL_ID, String firstName, String dateOfBirth) throws IllegalArgumentException {
+        super(ASSIGNED_SOCIAL_ID, firstName);
         setDateOfBirth(dateOfBirth);
     }
 
