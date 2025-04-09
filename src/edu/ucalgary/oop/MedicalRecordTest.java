@@ -3,7 +3,6 @@ package edu.ucalgary.oop;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import java.util.List;
 
 public class MedicalRecordTest {
     private MedicalRecord medicalRecord;
@@ -24,8 +23,8 @@ public class MedicalRecordTest {
         MedicalRecord newMedicalRecord = new MedicalRecord(newLocation, "Treatment details", validDateOfTreatment);
         assertNotNull("Constructor should successfully create an instance with a valid date of treatment",
                 newMedicalRecord);
-        assertEquals("Constructor should set the entry date correctly", validDateOfTreatment,
-                newMedicalRecord.getEntryDate());
+        assertEquals("Constructor should set the date of treatment correctly", validDateOfTreatment,
+                newMedicalRecord.getDateOfTreatment());
     }
 
     @Test(expected = IllegalArgumentException.class)

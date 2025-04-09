@@ -5,7 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class CotTest {
-    private Supply cot;
+    private Cot cot;
     private String roomToTest;
     private String gridToTest;
 
@@ -18,7 +18,7 @@ public class CotTest {
 
     @Test
     public void testConstructor() {
-        Supply newCot = new Cot(roomToTest, gridToTest, 1);
+        Cot newCot = new Cot(roomToTest, gridToTest, 1);
         assertNotNull("Constructor should successfully create an instance of Cot", newCot);
     }
 
@@ -32,7 +32,7 @@ public class CotTest {
     @Test
     public void testSetAndGetTypeWithValidType() {
         String newGrid = "C9";
-        cot.setGrid(validType);
-        assertEquals("setGrid should update and getGrid should return the new grid", newGrid, got.getGrid());
+        cot.setGrid(newGrid);
+        assertEquals("setGrid should update and getGrid should return the new grid", newGrid, cot.getGrid());
     }
 }

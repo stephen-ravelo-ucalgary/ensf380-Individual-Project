@@ -3,13 +3,11 @@ package edu.ucalgary.oop;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import java.util.List;
 
 public class PersonTest {
     private Person person;
     private String expectedFirstName = "Stephen";
     private String expectedDateOfBirth = "2004-12-31";
-    private String validDate = "2025-01-15";
     private String invalidDate = "15/13/2025";
     private String expectedComments = "Needs medical attention and speaks 2 languages";
 

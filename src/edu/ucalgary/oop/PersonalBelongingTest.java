@@ -3,10 +3,9 @@ package edu.ucalgary.oop;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import java.util.List;
 
 public class PersonalBelongingTest {
-    private Supply personalBelonging;
+    private PersonalBelonging personalBelonging;
     private String descriptionToTest;
 
     @Before
@@ -17,7 +16,7 @@ public class PersonalBelongingTest {
 
     @Test
     public void testConstructor() {
-        Supply newPersonalBelonging = new PersonalBelonging("newDescription", 1);
+        PersonalBelonging newPersonalBelonging = new PersonalBelonging("newDescription", 1);
         assertNotNull("Constructor should successfully create an instance of PersonalBelonging", newPersonalBelonging);
     }
 

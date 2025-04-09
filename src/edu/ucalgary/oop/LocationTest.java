@@ -3,9 +3,7 @@ package edu.ucalgary.oop;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class LocationTest {
     private Location location;
@@ -26,7 +24,7 @@ public class LocationTest {
 
         suppliesToTest = new ArrayList<Supply>();
         suppliesToTest.add(new Blanket(1));
-        suppliesToTest.add(new PersonalBelonging("belonging"));
+        suppliesToTest.add(new PersonalBelonging("description", 1));
     }
 
     @Test
@@ -155,9 +153,9 @@ public class LocationTest {
         expectedSupplies.add(supply1);
         expectedSupplies.add(supply2);
         
-        location.addOccupant(supply1);
-        location.addOccupant(supply2);
-        location.removeOccupant(supply2);
+        location.addSupply(supply1);
+        location.addSupply(supply2);
+        location.removeSupply(supply2);
 
         ArrayList<Supply> testSupplies = location.getSupplies();
         

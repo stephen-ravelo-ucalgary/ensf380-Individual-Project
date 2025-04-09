@@ -3,7 +3,6 @@ package edu.ucalgary.oop;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import java.util.List;
 
 public class InquiryTest {
     private Inquiry inquiry;
@@ -78,9 +77,9 @@ public class InquiryTest {
     @Test
     public void testSetAndGetLastKnownLocation() {
         Location newLocation = new Location("newLocationName", "newLocationAddress");
-        inquiry.setLocation(newLocation);
+        inquiry.setLastKnownLocation(newLocation);
         assertEquals("setLocation should update and getLocation should return the new location", newLocation,
-                inquiry.getLocation());
+                inquiry.getLastKnownLocation());
     }
 
     @Test

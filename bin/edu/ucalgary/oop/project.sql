@@ -2,10 +2,11 @@
 
 -- During grading, TAs will assume that these tables exist, but will enter different values.  Thus you cannot assume that any of the values provided here exist, but you can assume the tables exist. You may assume that we will use only valid data in the SQL file.
 
-
+/*
 DROP DATABASE IF EXISTS ensf380project;
 CREATE DATABASE ensf380project;
 \c ensf380project
+*/
 
 -- Create tables
 CREATE TABLE Person (

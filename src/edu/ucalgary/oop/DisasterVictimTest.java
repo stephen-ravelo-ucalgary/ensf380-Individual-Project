@@ -3,9 +3,7 @@ package edu.ucalgary.oop;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class DisasterVictimTest {
     private DisasterVictim victim;
@@ -50,14 +48,14 @@ public class DisasterVictimTest {
     public void testBirthdateConstructorWithInvalidBirthdate() {
         String validEntryDate = "2025-02-18";
         String invalidBirthDate = "20250112";
-        DisasterVictim victim = new DisasterVictim("Yaw", validEntryDate, invalidBirthDate);
+        new DisasterVictim("Yaw", validEntryDate, invalidBirthDate);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testBirthdateConstructorWithBirthdateAfterEntryDate() {
         String validEntryDate = "2025-02-17";
         String validBirthDate = "2025-02-18";
-        DisasterVictim victim = new DisasterVictim("Jessica", validEntryDate, validBirthDate);
+        new DisasterVictim("Jessica", validEntryDate, validBirthDate);
     }
 
     @Test
@@ -116,7 +114,7 @@ public class DisasterVictimTest {
         Supply supply1 = new Blanket(1);
         Supply supply2 = new Blanket(1);
 
-        ArrayList<Supply> expectedSupplies = new ArrayList<Supply>()
+        ArrayList<Supply> expectedSupplies = new ArrayList<Supply>();
         expectedSupplies.add(supply1);
         expectedSupplies.add(supply2);
         
@@ -146,7 +144,7 @@ public class DisasterVictimTest {
         boolean correct = false;
         int i;
         for (i = 0; i < testRecords.size(); i++) {
-            if (testRecords.get() == newRecord) {
+            if (testRecords.get(i) == newRecord) {
                 correct = true;
             }
         }
