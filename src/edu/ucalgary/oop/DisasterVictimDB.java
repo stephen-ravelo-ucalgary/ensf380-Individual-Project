@@ -15,9 +15,9 @@ import java.time.LocalDateTime;
  */
 public class DisasterVictimDB {
 
-    public final String DBURL;
-    public final String USERNAME;
-    public final String PASSWORD;
+    private final String DBURL;
+    private final String USERNAME;
+    private final String PASSWORD;
 
     private Connection dbConnect;
 
@@ -52,7 +52,7 @@ public class DisasterVictimDB {
      * Get the database's URL.
      * @return A String representing the database's URL.
      */
-    String getDburl() {
+    public String getDburl() {
         return this.DBURL;
     }
 
@@ -60,7 +60,7 @@ public class DisasterVictimDB {
      * Get the username of the current user.
      * @return A String representing the username of the current user.
      */
-    String getUsername() {
+    public String getUsername() {
         return this.USERNAME;
     }
 
@@ -68,7 +68,7 @@ public class DisasterVictimDB {
      * Get the password of the current user.
      * @return A String representing the password of the current user.
      */
-    String getPassword() {
+    public String getPassword() {
         return this.PASSWORD;
     }
 
