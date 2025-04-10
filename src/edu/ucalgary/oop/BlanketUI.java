@@ -2,21 +2,16 @@ package edu.ucalgary.oop;
 
 import javax.swing.*;
 
-public class PersonalBelongingUI implements UI {
+public class BlanketUI {
+
     private JPanel panel;
 
-    private JLabel descriptionLabel;
-
-    private JTextArea descriptionTextArea;
     private JButton backButton;
     private JButton submitToPersonButton;
     private JButton submitToLocationButton;
 
-    public PersonalBelongingUI() {
+    public BlanketUI() {
         panel = new JPanel();
-
-        descriptionLabel = new JLabel("Description:");
-        descriptionTextArea = new JTextArea("", 10, 20);
 
         submitToPersonButton = new JButton("Submit to Person");
         submitToLocationButton = new JButton("Submit to Location");
@@ -30,16 +25,11 @@ public class PersonalBelongingUI implements UI {
 
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(descriptionLabel)
                         .addComponent(submitToPersonButton)
                         .addComponent(backButton))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(descriptionTextArea)
                         .addComponent(submitToLocationButton)));
         layout.setVerticalGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(descriptionLabel)
-                        .addComponent(descriptionTextArea))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(submitToPersonButton)
                         .addComponent(submitToLocationButton))
@@ -53,22 +43,6 @@ public class PersonalBelongingUI implements UI {
 
     public void setPanel(JPanel panel) {
         this.panel = panel;
-    }
-
-    public JLabel getDescriptionLabel() {
-        return descriptionLabel;
-    }
-
-    public void setDescriptionLabel(JLabel descriptionLabel) {
-        this.descriptionLabel = descriptionLabel;
-    }
-
-    public JTextArea getDescriptionTextArea() {
-        return descriptionTextArea;
-    }
-
-    public void setDescriptionTextArea(JTextArea descriptionTextArea) {
-        this.descriptionTextArea = descriptionTextArea;
     }
 
     public JButton getBackButton() {
@@ -94,4 +68,7 @@ public class PersonalBelongingUI implements UI {
     public void setSubmitToLocationButton(JButton submitToLocationButton) {
         this.submitToLocationButton = submitToLocationButton;
     }
+
+    
+
 }

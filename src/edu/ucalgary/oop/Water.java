@@ -3,8 +3,8 @@ package edu.ucalgary.oop;
 public class Water extends Supply {
     private String dateAllocated;
 
-    public Water(int ID, String dateAllocated, int quantity) throws IllegalArgumentException{
-        super(ID, "water", quantity);
+    public Water(int ID, String dateAllocated) throws IllegalArgumentException{
+        super(ID, "water");
         setDateAllocated(dateAllocated);
     }
 

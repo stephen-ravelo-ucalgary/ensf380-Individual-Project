@@ -60,13 +60,9 @@ public class MedicalRecord {
     }
 
     // Helper method to check if a string matches the YYYY-MM-DD date format
-    private boolean isValidDateFormat(String date) {
-        try {
-            LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+    private static boolean isValidDateFormat(String date) {
+        String dateFormatPattern = "^\\d{4}-\\d{2}-\\d{2}$";
+        return date.matches(dateFormatPattern);
     }
 
     public int getID() {

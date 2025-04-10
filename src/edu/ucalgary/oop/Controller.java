@@ -1,13 +1,6 @@
 package edu.ucalgary.oop;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.EventQueue;
 import javax.swing.*;
-import java.awt.event.*;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.awt.FlowLayout;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Map;
@@ -21,13 +14,16 @@ public class Controller {
     private int currHighestMedicalRecordID = 0;
     private int currHighestLocationID = 0;
     private int currHighestInquiryID = 0;
+    private int currHighestSupplyID = 0;
 
     private ArrayList<MedicalRecord> currMedicalRecords;
+    private Supply currSupply;
 
     private Map<Integer, Location> locations = new HashMap<>();
     private Map<Integer, DisasterVictim> disasterVictims = new HashMap<>();
     private Map<Integer, MedicalRecord> medicalRecords = new HashMap<>();
     private Map<Integer, Inquiry> inquiries = new HashMap<>();
+    private Map<Integer, Supply> supplies = new HashMap<>();
 
     public Controller(View view) {
         this.view = view;
@@ -38,6 +34,7 @@ public class Controller {
         disasterVictims = db.selectAllPeople();
         medicalRecords = db.selectAllMedicalRecords();
         inquiries = db.selectAllInquiries();
+        supplies = db.selectAllSupplies();
         db.close();
 
         currMedicalRecords = new ArrayList<MedicalRecord>();
@@ -64,6 +61,11 @@ public class Controller {
                 currHighestInquiryID = inquiry.getID();
             }
         }
+        for (Supply supply : supplies.values().toArray(new Supply[0])) {
+            if (supply.getID() > currHighestSupplyID) {
+                currHighestSupplyID = supply.getID();
+            }
+        }
 
         initView();
     }
@@ -74,30 +76,66 @@ public class Controller {
     }
 
     public void initController() {
-        view.getMainMenuUI().getCreateDisasterVictimEntryButton().addActionListener(e -> view.showDisasterVictimUI());
-        view.getMainMenuUI().getCreateInquiryButton().addActionListener(e -> view.showInquiryUI());
-        view.getMainMenuUI().getAllocateSupplyButton().addActionListener(e -> view.showSupplyUI());
-        view.getMainMenuUI().getAddLocationButton().addActionListener(e -> view.showLocationUI());
+        MainMenuUI mainMenuUI = view.getMainMenuUI();
+        DisasterVictimUI disasterVictimUI = view.getDisasterVictimUI();
+        MedicalRecordUI medicalRecordUI = view.getMedicalRecordUI();
+        InquiryUI inquiryUI = view.getInquiryUI();
+        LocationUI locationUI = view.getLocationUI();
 
-        view.getDisasterVictimUI().getMedicalRecordButton().addActionListener(e -> view.showMedicalRecordUI());
-        view.getDisasterVictimUI().getSubmitButton().addActionListener(e -> submitDisasterVictimForm());
-        view.getDisasterVictimUI().getMainMenuButton().addActionListener(e -> reset());
+        SupplyUI supplyUI = view.getSupplyUI();
+        PersonalBelongingUI personalBelongingUI = view.getPersonalBelongingUI();
+        CotUI cotUI = view.getCotUI();
+        BlanketUI blanketUI = view.getBlanketUI();
+        WaterUI waterUI = view.getWaterUI();
+        SupplyAllocateToPersonUI supplyAllocateToPersonUI = view.getSupplyAllocateToPersonUI();
+        SupplyAllocateToLocationUI supplyAllocateToLocationUI = view.getSupplyAllocateToLocationUI();
 
-        view.getMedicalRecordUI().getBackButton().addActionListener(e -> view.showDisasterVictimUI());
-        view.getMedicalRecordUI().getSubmitButton().addActionListener(e -> submitMedicalRecordForm());
+        mainMenuUI.getCreateDisasterVictimEntryButton().addActionListener(e -> view.showDisasterVictimUI());
+        mainMenuUI.getCreateInquiryButton().addActionListener(e -> view.showInquiryUI());
+        mainMenuUI.getAllocateSupplyButton().addActionListener(e -> view.showSupplyUI());
+        mainMenuUI.getAddLocationButton().addActionListener(e -> view.showLocationUI());
 
-        view.getInquiryUI().getMainMenuButton().addActionListener(e -> view.showMainMenuUI());
-        view.getInquiryUI().getAddLocationButton().addActionListener(e -> view.showLocationUI());
-        view.getInquiryUI().getSubmitButton().addActionListener(e -> submitInquiryForm());
+        disasterVictimUI.getMedicalRecordButton().addActionListener(e -> view.showMedicalRecordUI());
+        disasterVictimUI.getSubmitButton().addActionListener(e -> submitDisasterVictimForm());
+        disasterVictimUI.getMainMenuButton().addActionListener(e -> reset());
 
-        view.getSupplyUI().getMainMenuButton().addActionListener(e -> view.showMainMenuUI());
-        view.getSupplyUI().getAddPersonalBelongingButton().addActionListener(e -> view.showPersonalBelongingUI());
+        medicalRecordUI.getBackButton().addActionListener(e -> view.showDisasterVictimUI());
+        medicalRecordUI.getSubmitButton().addActionListener(e -> submitMedicalRecordForm());
 
-        view.getPersonalBelongingUI().getBackButton().addActionListener(e -> view.showSupplyUI());
-        view.getPersonalBelongingUI().getSubmitButton().addActionListener(e -> submitPersonalBelonging());
+        inquiryUI.getMainMenuButton().addActionListener(e -> view.showMainMenuUI());
+        inquiryUI.getAddLocationButton().addActionListener(e -> view.showLocationUI());
+        inquiryUI.getSubmitButton().addActionListener(e -> submitInquiryForm());
 
-        view.getLocationUI().getMainMenuButton().addActionListener(e -> view.showMainMenuUI());
-        view.getLocationUI().getSubmitButton().addActionListener(e -> submitLocationForm());
+        supplyUI.getMainMenuButton().addActionListener(e -> view.showMainMenuUI());
+        supplyUI.getAddPersonalBelongingButton().addActionListener(e -> view.showPersonalBelongingUI());
+        supplyUI.getAddCotButton().addActionListener(e -> view.showCotUI());
+        supplyUI.getAddBlanketButton().addActionListener(e -> view.showBlanketUI());
+        supplyUI.getAddWaterButton().addActionListener(e -> view.showWaterUI());
+
+        personalBelongingUI.getBackButton().addActionListener(e -> view.showSupplyUI());
+        personalBelongingUI.getSubmitToPersonButton().addActionListener(e -> submitPersonalBelonging(true));
+        personalBelongingUI.getSubmitToLocationButton().addActionListener(e -> submitPersonalBelonging(false));
+
+        cotUI.getBackButton().addActionListener(e -> view.showSupplyUI());
+        cotUI.getSubmitToPersonButton().addActionListener(e -> submitCot(true));
+        cotUI.getSubmitToLocationButton().addActionListener(e -> submitCot(false));
+
+        blanketUI.getBackButton().addActionListener(e -> view.showSupplyUI());
+        blanketUI.getSubmitToPersonButton().addActionListener(e -> submitBlanket(true));
+        blanketUI.getSubmitToLocationButton().addActionListener(e -> submitBlanket(false));
+
+        waterUI.getBackButton().addActionListener(e -> view.showSupplyUI());
+        waterUI.getSubmitToPersonButton().addActionListener(e -> submitWater(true));
+        waterUI.getSubmitToLocationButton().addActionListener(e -> submitWater(false));
+
+        supplyAllocateToPersonUI.getSubmitButton().addActionListener(e -> allocateSupplyToPerson());
+        supplyAllocateToPersonUI.getBackButton().addActionListener(e -> view.showSupplyUI());
+
+        supplyAllocateToLocationUI.getSubmitButton().addActionListener(e -> allocateSupplyToLocation());
+        supplyAllocateToLocationUI.getBackButton().addActionListener(e -> view.showSupplyUI());
+
+        locationUI.getMainMenuButton().addActionListener(e -> view.showMainMenuUI());
+        locationUI.getSubmitButton().addActionListener(e -> submitLocationForm());
     }
 
     private void reset() {
@@ -119,6 +157,8 @@ public class Controller {
                 .setModel(new DefaultComboBoxModel<>(formattedPeople.toArray(new String[0])));
         view.getInquiryUI().getMissingPersonComboBox()
                 .setModel(new DefaultComboBoxModel<>(formattedPeople.toArray(new String[0])));
+        view.getSupplyAllocateToPersonUI().getPersonComboBox()
+                .setModel(new DefaultComboBoxModel<>(formattedPeople.toArray(new String[0])));
     }
 
     private void updateLocations() {
@@ -133,6 +173,8 @@ public class Controller {
         view.getMedicalRecordUI().getLocationComboBox()
                 .setModel(new DefaultComboBoxModel<>(formatedLocations.toArray(new String[0])));
         view.getInquiryUI().getLastKnownLocationComboBox()
+                .setModel(new DefaultComboBoxModel<>(formatedLocations.toArray(new String[0])));
+        view.getSupplyAllocateToLocationUI().getLocationComboBox()
                 .setModel(new DefaultComboBoxModel<>(formatedLocations.toArray(new String[0])));
     }
 
@@ -160,11 +202,13 @@ public class Controller {
         disasterVictim.setMedicalRecords(currMedicalRecords);
         disasterVictim.setLocation(locations.get(locationID));
 
-        // Add new disaster victim to location
+        // Add new disaster victim to location and PersonLocation in database
         locations.get(locationID).addOccupant(disasterVictim);
 
+        // Add new person to disasterVictims and Person in database
         disasterVictims.put(currHighestSocialID, disasterVictim);
 
+        // Add medical records to medicalRecords and MedicalRecord in database
         for (MedicalRecord medicalRecord : currMedicalRecords) {
             medicalRecords.put(currHighestSocialID, medicalRecord);
         }
@@ -207,6 +251,7 @@ public class Controller {
         currHighestLocationID++;
         Location location = new Location(currHighestLocationID, name, address);
 
+        // Add to locations and database
         locations.put(currHighestLocationID, location);
 
         updateLocations();
@@ -233,12 +278,97 @@ public class Controller {
         Inquiry inquiry = new Inquiry(currHighestInquiryID, inquirerObject, missingPersonObject, dateOfInquiry,
                 infoProvided, location);
 
+        // Add to inquiries and database
         inquiries.put(currHighestInquiryID, inquiry);
 
         view.showMainMenuUI();
     }
 
-    private void submitPersonalBelonging() {
+    private void submitPersonalBelonging(boolean submitToPerson) {
+        PersonalBelongingUI personalBelongingUI = view.getPersonalBelongingUI();
 
+        String description = personalBelongingUI.getDescriptionTextArea().getText().toString();
+
+        currSupply = new PersonalBelonging(currHighestSupplyID + 1, description);
+
+        if (submitToPerson) {
+            view.showSupplyAllocateToPersonUI();
+        } else {
+            view.showSupplyAllocateToLocationUI();
+        }
+    }
+
+    private void submitCot(boolean submitToPerson) {
+        CotUI cotUI = view.getCotUI();
+
+        String room = cotUI.getRoomTextField().getText().toString();
+        String grid = cotUI.getGridTextField().getText().toString();
+
+        currSupply = new Cot(currHighestSupplyID + 1, room, grid);
+
+        if (submitToPerson) {
+            view.showSupplyAllocateToPersonUI();
+        } else {
+            view.showSupplyAllocateToLocationUI();
+        }
+    }
+
+    private void submitBlanket(boolean submitToPerson) {
+        currSupply = new Blanket(currHighestSupplyID + 1);
+
+        if (submitToPerson) {
+            view.showSupplyAllocateToPersonUI();
+        } else {
+            view.showSupplyAllocateToLocationUI();
+        }
+    }
+
+    private void submitWater(boolean submitToPerson) {
+        String time = LocalDateTime.now().toString();
+        System.out.println(time.split("T")[0]);
+        currSupply = new Water(currHighestSupplyID + 1, "0000-00-00");
+
+        if (submitToPerson) {
+            view.showSupplyAllocateToPersonUI();
+        } else {
+            view.showSupplyAllocateToLocationUI();
+        }
+    }
+
+    private void allocateSupplyToPerson() {
+        SupplyAllocateToPersonUI supplyAllocateToPersonUI = view.getSupplyAllocateToPersonUI();
+
+        // Add person relationship
+        int personID = Integer
+                .valueOf(supplyAllocateToPersonUI.getPersonComboBox().getSelectedItem().toString().split("\\s+")[0]);
+        DisasterVictim person = disasterVictims.get(personID);
+        person.addPersonalBelonging(currSupply);
+
+        // Add to supplies and database
+        currHighestSupplyID++;
+        supplies.put(currHighestSupplyID, currSupply);
+
+        //for (Supply supply : supplies.values()) {
+        //    System.out.println(supply.getType());
+        //}
+
+        view.showMainMenuUI();
+    }
+
+    private void allocateSupplyToLocation() {
+        SupplyAllocateToLocationUI supplyAllocateToLocationUI = view.getSupplyAllocateToLocationUI();
+
+        // Add location relationship
+        int locationID = Integer
+                .valueOf(
+                        supplyAllocateToLocationUI.getLocationComboBox().getSelectedItem().toString().split("\\s+")[0]);
+        Location location = locations.get(locationID);
+        location.addSupply(currSupply);
+
+        // Add to supplies and database
+        currHighestSupplyID++;
+        supplies.put(currHighestSupplyID, currSupply);
+
+        view.showMainMenuUI();
     }
 }

@@ -2,21 +2,26 @@ package edu.ucalgary.oop;
 
 import javax.swing.*;
 
-public class PersonalBelongingUI implements UI {
+public class CotUI implements UI {
     private JPanel panel;
 
-    private JLabel descriptionLabel;
+    private JLabel roomLabel;
+    private JLabel gridLabel;
 
-    private JTextArea descriptionTextArea;
+    private JTextField roomTextField;
+    private JTextField gridTextField;
     private JButton backButton;
     private JButton submitToPersonButton;
     private JButton submitToLocationButton;
 
-    public PersonalBelongingUI() {
+    public CotUI() {
         panel = new JPanel();
 
-        descriptionLabel = new JLabel("Description:");
-        descriptionTextArea = new JTextArea("", 10, 20);
+        roomLabel = new JLabel("Room:");
+        roomTextField = new JTextField("", 20);
+
+        gridLabel = new JLabel("Grid:");
+        gridTextField = new JTextField("", 20);
 
         submitToPersonButton = new JButton("Submit to Person");
         submitToLocationButton = new JButton("Submit to Location");
@@ -30,16 +35,21 @@ public class PersonalBelongingUI implements UI {
 
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(descriptionLabel)
+                        .addComponent(roomLabel)
+                        .addComponent(gridLabel)
                         .addComponent(submitToPersonButton)
                         .addComponent(backButton))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(descriptionTextArea)
+                        .addComponent(roomTextField)
+                        .addComponent(gridTextField)
                         .addComponent(submitToLocationButton)));
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(descriptionLabel)
-                        .addComponent(descriptionTextArea))
+                        .addComponent(roomLabel)
+                        .addComponent(roomTextField))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(gridLabel)
+                        .addComponent(gridTextField))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(submitToPersonButton)
                         .addComponent(submitToLocationButton))
@@ -55,20 +65,36 @@ public class PersonalBelongingUI implements UI {
         this.panel = panel;
     }
 
-    public JLabel getDescriptionLabel() {
-        return descriptionLabel;
+    public JLabel getRoomLabel() {
+        return roomLabel;
     }
 
-    public void setDescriptionLabel(JLabel descriptionLabel) {
-        this.descriptionLabel = descriptionLabel;
+    public void setRoomLabel(JLabel roomLabel) {
+        this.roomLabel = roomLabel;
     }
 
-    public JTextArea getDescriptionTextArea() {
-        return descriptionTextArea;
+    public JLabel getGridLabel() {
+        return gridLabel;
     }
 
-    public void setDescriptionTextArea(JTextArea descriptionTextArea) {
-        this.descriptionTextArea = descriptionTextArea;
+    public void setGridLabel(JLabel gridLabel) {
+        this.gridLabel = gridLabel;
+    }
+
+    public JTextField getRoomTextField() {
+        return roomTextField;
+    }
+
+    public void setRoomTextField(JTextField roomTextField) {
+        this.roomTextField = roomTextField;
+    }
+
+    public JTextField getGridTextField() {
+        return gridTextField;
+    }
+
+    public void setGridTextField(JTextField gridTextField) {
+        this.gridTextField = gridTextField;
     }
 
     public JButton getBackButton() {
