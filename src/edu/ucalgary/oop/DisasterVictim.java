@@ -27,15 +27,6 @@ public class DisasterVictim extends Person {
         return date.matches(dateFormatPattern);
     }
 
-    private static int convertDateStringToInt(String dateStr) {
-        // Use regex to remove dashes from the date string
-        String formattedDate = dateStr.replaceAll("-", "");
-        
-        // Convert the formatted string to an integer
-        return Integer.parseInt(formattedDate);
-    }
-
-  
     // Getters and setters
 
     @Override

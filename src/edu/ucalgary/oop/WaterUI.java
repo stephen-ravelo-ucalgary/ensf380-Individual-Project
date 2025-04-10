@@ -2,7 +2,7 @@ package edu.ucalgary.oop;
 
 import javax.swing.*;
 
-public class WaterUI {
+public class WaterUI implements UI{
 
     private JPanel panel;
 

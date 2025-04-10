@@ -10,6 +10,7 @@ public class MainMenuUI implements UI {
     private JButton allocateSupplyButton;
     private JButton editExistingDataButton;
     private JButton addLocationButton;
+    private JButton exitButton;
 
     public MainMenuUI() {
         panel = new JPanel();
@@ -19,6 +20,7 @@ public class MainMenuUI implements UI {
         allocateSupplyButton = new JButton("Allocate Supply");
         editExistingDataButton = new JButton("Edit Existing Data");
         addLocationButton = new JButton("Add Location");
+        exitButton = new JButton("Exit");
 
         GroupLayout layout = new GroupLayout(panel);
         layout.setAutoCreateGaps(true);
@@ -31,7 +33,8 @@ public class MainMenuUI implements UI {
                         .addComponent(createInquiryButton)
                         .addComponent(allocateSupplyButton)
                         .addComponent(editExistingDataButton)
-                        .addComponent(addLocationButton)));
+                        .addComponent(addLocationButton)
+                        .addComponent(exitButton)));
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(createDisasterVictimEntryButton))
@@ -42,7 +45,9 @@ public class MainMenuUI implements UI {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(editExistingDataButton))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(addLocationButton)));
+                        .addComponent(addLocationButton))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(exitButton)));
     }
 
     public JPanel getPanel() {
@@ -91,5 +96,13 @@ public class MainMenuUI implements UI {
 
     public void setAddLocationButton(JButton addLocationButton) {
         this.addLocationButton = addLocationButton;
+    }
+
+    public JButton getExitButton() {
+        return exitButton;
+    }
+
+    public void setExitButton(JButton exitButton) {
+        this.exitButton = exitButton;
     }
 }

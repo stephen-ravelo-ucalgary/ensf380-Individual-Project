@@ -1,32 +1,30 @@
 package edu.ucalgary.oop;
 
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import javax.swing.*;
 import java.awt.*;
 
 public class View extends JFrame {
-    JFrame frame;
-    JPanel cards;
-    Container pane;
-    MainMenuUI mainMenuUI;
-    DisasterVictimUI disasterVictimUI;
-    MedicalRecordUI medicalRecordUI;
-    InquiryUI inquiryUI;
-    LocationUI locationUI;
+    private JFrame frame;
+    private JPanel cards;
+    private Container pane;
+    private MainMenuUI mainMenuUI;
+    private DisasterVictimUI disasterVictimUI;
+    private MedicalRecordUI medicalRecordUI;
+    private InquiryUI inquiryUI;
+    private LocationUI locationUI;
 
-    SupplyUI supplyUI;
-    PersonalBelongingUI personalBelongingUI;
-    CotUI cotUI;
-    BlanketUI blanketUI;
-    WaterUI waterUI;
-    SupplyAllocateToPersonUI supplyAllocateToPersonUI;
-    SupplyAllocateToLocationUI supplyAllocateToLocationUI;
+    private SupplyUI supplyUI;
+    private PersonalBelongingUI personalBelongingUI;
+    private CotUI cotUI;
+    private BlanketUI blanketUI;
+    private WaterUI waterUI;
+    private SupplyAllocateToPersonUI supplyAllocateToPersonUI;
+    private SupplyAllocateToLocationUI supplyAllocateToLocationUI;
 
-    EditMenuUI editMenuUI;
-    EditDisasterVictimUI editDisasterVictimUI;
-    EditLocationUI editLocationUI;
-    EditInquiryUI editInquiryUI;
+    private EditMenuUI editMenuUI;
+    private EditDisasterVictimUI editDisasterVictimUI;
+    private EditLocationUI editLocationUI;
+    private EditInquiryUI editInquiryUI;
 
     public View() {
         mainMenuUI = new MainMenuUI();
@@ -49,7 +47,9 @@ public class View extends JFrame {
         editInquiryUI = new EditInquiryUI();
 
         frame = new JFrame();
+        frame.getContentPane().setLayout(new BorderLayout());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
         cards = new JPanel(new CardLayout());

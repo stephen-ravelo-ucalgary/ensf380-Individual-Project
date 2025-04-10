@@ -2,7 +2,6 @@ package edu.ucalgary.oop;
 
 public class Supply {
     private String type;
-    private int quantity;
     private final int ID;
 
     public Supply(int ID, String type) {

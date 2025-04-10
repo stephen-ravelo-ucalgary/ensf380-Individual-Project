@@ -2,7 +2,6 @@ package edu.ucalgary.oop;
 
 import javax.swing.*;
 import java.sql.Date;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Map;
@@ -106,6 +105,7 @@ public class Controller {
         mainMenuUI.getAllocateSupplyButton().addActionListener(e -> view.showSupplyUI());
         mainMenuUI.getEditExistingDataButton().addActionListener(e -> view.showEditMenuUI());
         mainMenuUI.getAddLocationButton().addActionListener(e -> view.showLocationUI());
+        mainMenuUI.getExitButton().addActionListener(e -> exit());
 
         disasterVictimUI.getMedicalRecordButton().addActionListener(e -> view.showMedicalRecordUI());
         disasterVictimUI.getSubmitButton().addActionListener(e -> submitDisasterVictimForm());
@@ -162,6 +162,11 @@ public class Controller {
         editInquiryUI.getMainMenuButton().addActionListener(e -> view.showMainMenuUI());
         editInquiryUI.getAddLocationButton().addActionListener(e -> view.showLocationUI());
         editInquiryUI.getSubmitButton().addActionListener(e -> submitEditInquiryForm());
+    }
+
+    private void exit() {
+        db.close();
+        System.exit(0);
     }
 
     private void reset() {
@@ -234,26 +239,38 @@ public class Controller {
         String gender = disasterVictimUI.getGenderComboBox().getSelectedItem().toString();
         String comments = disasterVictimUI.getCommentsTextArea().getText();
         String phoneNumber = disasterVictimUI.getPhoneNumberTextField().getText();
-        int familyGroup = Integer.valueOf(disasterVictimUI.getFamilyGroupTextField().getText());
+        String familyGroup = disasterVictimUI.getFamilyGroupTextField().getText();
         int locationID = Integer
                 .valueOf(disasterVictimUI.getLocationComboBox().getSelectedItem().toString().split("\\s+")[0]);
 
-        currHighestSocialID++;
-        DisasterVictim disasterVictim = new DisasterVictim(currHighestSocialID, firstName, dateOfBirth);
+        DisasterVictim disasterVictim;
 
-        disasterVictim.setLastName(lastName);
-        disasterVictim.setGender(gender);
-        disasterVictim.setComments(comments);
-        disasterVictim.setPhoneNumber(phoneNumber);
-        disasterVictim.setFamilyGroup(familyGroup);
-        disasterVictim.setMedicalRecords(currMedicalRecords);
-        disasterVictim.setLocation(locations.get(locationID));
+        try {
+            disasterVictim = new DisasterVictim(currHighestSocialID + 1, firstName, dateOfBirth);
+            disasterVictim.setLastName(lastName);
+            disasterVictim.setGender(gender);
+            disasterVictim.setComments(comments);
+            disasterVictim.setPhoneNumber(phoneNumber);
+            disasterVictim.setFamilyGroup(Integer.valueOf(familyGroup));
+            disasterVictim.setMedicalRecords(currMedicalRecords);
+            disasterVictim.setLocation(locations.get(locationID));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(view,
+                    "Please review data.",
+                    "Invalid Input",
+                    JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+            return;
+        }
+
+        currHighestSocialID++;
 
         db.initializeConnection();
 
         // Add new person to disasterVictims and Person in database
         disasterVictims.put(currHighestSocialID, disasterVictim);
-        db.insertNewPerson(firstName, lastName, Date.valueOf(dateOfBirth), gender, comments, phoneNumber, familyGroup);
+        db.insertNewPerson(firstName, lastName, Date.valueOf(dateOfBirth), gender, comments, phoneNumber,
+                Integer.valueOf(familyGroup));
 
         // Add new disaster victim to location and PersonLocation in database
         locations.get(locationID).addOccupant(disasterVictim);
@@ -280,15 +297,28 @@ public class Controller {
     private void submitMedicalRecordForm() {
         MedicalRecordUI medicalRecordUI = view.getMedicalRecordUI();
 
-        String location = medicalRecordUI.getLocationComboBox().getSelectedItem().toString();
+        int locationID = Integer
+                .valueOf(medicalRecordUI.getLocationComboBox().getSelectedItem().toString().split("\\s+")[0]);
         String treatmentDetails = medicalRecordUI.getTreatmentDetailsTextArea().getText();
         String dateOfTreatment = medicalRecordUI.getDateOfTreatmentTextField().getText();
 
-        currHighestMedicalRecordID++;
-        MedicalRecord medicalRecord = new MedicalRecord(currHighestMedicalRecordID, locations.get(location),
-                treatmentDetails, dateOfTreatment);
+        MedicalRecord medicalRecord;
 
-        currMedicalRecords.add(medicalRecord);
+        try {
+            medicalRecord = new MedicalRecord(currHighestMedicalRecordID + 1, locations.get(locationID),
+                    treatmentDetails,
+                    dateOfTreatment);
+            currMedicalRecords.add(medicalRecord);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(view,
+                    "Please review data.",
+                    "Invalid Input",
+                    JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+            return;
+        }
+
+        currHighestMedicalRecordID++;
 
         view.getDisasterVictimUI().incrementMedicalRecordCount();
         view.showDisasterVictimUI();
@@ -318,11 +348,11 @@ public class Controller {
 
     private void submitInquiryForm() {
         InquiryUI inquiryUI = view.getInquiryUI();
+        Date date = Date.valueOf(LocalDateTime.now().toLocalDate());
 
         int inquirerID = Integer.valueOf(inquiryUI.getInquirerComboBox().getSelectedItem().toString().split("\\s+")[0]);
         int missingPersonID = Integer
                 .valueOf(inquiryUI.getMissingPersonComboBox().getSelectedItem().toString().split("\\s+")[0]);
-        String dateOfInquiry = inquiryUI.getDateOfInquiryTextField().getText();
         String infoProvided = inquiryUI.getInfoProvidedTextArea().getText();
         int lastKnownLocationID = Integer
                 .valueOf(inquiryUI.getLastKnownLocationComboBox().getSelectedItem().toString().split("\\s+")[0]);
@@ -332,12 +362,10 @@ public class Controller {
         Location location = locations.get(lastKnownLocationID);
 
         currHighestInquiryID++;
-        Inquiry inquiry = new Inquiry(currHighestInquiryID, inquirerObject, missingPersonObject, dateOfInquiry,
-                infoProvided, location);
+        Inquiry inquiry = new Inquiry(currHighestInquiryID, inquirerObject, missingPersonObject,
+                LocalDateTime.now().toString().split("T")[0], infoProvided, location);
 
         db.initializeConnection();
-
-        Date date = Date.valueOf(LocalDateTime.now().toLocalDate());
 
         // Add to inquiries and database
         inquiries.put(currHighestInquiryID, inquiry);
@@ -495,22 +523,31 @@ public class Controller {
         String gender = editDisasterVictimUI.getGenderComboBox().getSelectedItem().toString();
         String comments = editDisasterVictimUI.getCommentsTextArea().getText();
         String phoneNumber = editDisasterVictimUI.getPhoneNumberTextField().getText();
-        int familyGroup = Integer.valueOf(editDisasterVictimUI.getFamilyGroupTextField().getText());
+        String familyGroup = editDisasterVictimUI.getFamilyGroupTextField().getText();
 
-        DisasterVictim disasterVictim = disasterVictims.get(currEditPersonID);
+        DisasterVictim disasterVictim;
 
-        disasterVictim.setFirstName(firstName);
-        disasterVictim.setLastName(lastName);
-        disasterVictim.setDateOfBirth(dateOfBirth);
-        disasterVictim.setGender(gender);
-        disasterVictim.setComments(comments);
-        disasterVictim.setPhoneNumber(phoneNumber);
-        disasterVictim.setFamilyGroup(familyGroup);
-        disasterVictim.setMedicalRecords(currMedicalRecords);
+        try {
+            disasterVictim = new DisasterVictim(currEditPersonID, firstName, dateOfBirth);
+            disasterVictim.setLastName(lastName);
+            disasterVictim.setGender(gender);
+            disasterVictim.setComments(comments);
+            disasterVictim.setPhoneNumber(phoneNumber);
+            disasterVictim.setFamilyGroup(Integer.valueOf(familyGroup));
+            disasterVictim.setMedicalRecords(currMedicalRecords);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(view,
+                    "Please review data.",
+                    "Invalid Input",
+                    JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+            return;
+        }
 
         db.initializeConnection();
 
-        db.updatePerson(currEditPersonID, firstName, lastName, Date.valueOf(dateOfBirth), gender, comments, phoneNumber, familyGroup);
+        db.updatePerson(currEditPersonID, firstName, lastName, Date.valueOf(dateOfBirth), gender, comments, phoneNumber,
+                Integer.valueOf(familyGroup));
 
         // Add medical records to medicalRecords and MedicalRecord in database
         for (MedicalRecord medicalRecord : currMedicalRecords) {
@@ -559,6 +596,10 @@ public class Controller {
         location.setName(name);
         location.setAddress(address);
 
+        db.initializeConnection();
+        db.updateLocation(currEditLocationID, name, address);
+        db.close();
+
         updateLocations();
 
         view.showMainMenuUI();
@@ -572,10 +613,12 @@ public class Controller {
         Inquiry inquiry = inquiries.get(inquiryID);
         currEditInquiryID = inquiryID;
 
-        editInquiryUI.getInquirerComboBox().setSelectedIndex(inquiry.getInquirer().getASSIGNED_SOCIAL_ID() - 1);
-        editInquiryUI.getMissingPersonComboBox()
-                .setSelectedIndex(inquiry.getMissingPerson().getASSIGNED_SOCIAL_ID() - 1);
-        editInquiryUI.getDateOfInquiryTextField().setText(inquiry.getDateOfInquiry());
+        // editInquiryUI.getInquirerComboBox().setSelectedIndex(inquiry.getInquirer().getASSIGNED_SOCIAL_ID()
+        // - 1);
+        // editInquiryUI.getMissingPersonComboBox().setSelectedIndex(inquiry.getMissingPerson().getASSIGNED_SOCIAL_ID()
+        // - 1);
+        editInquiryUI.getInquirerComboBox().setSelectedIndex(0);
+        editInquiryUI.getMissingPersonComboBox().setSelectedIndex(0);
         editInquiryUI.getInfoProvidedTextArea().setText(inquiry.getInfoProvided());
         editInquiryUI.getLastKnownLocationComboBox().setSelectedIndex(inquiry.getLastKnownLocation().getID() - 1);
 
@@ -589,7 +632,6 @@ public class Controller {
                 .valueOf(editInquiryUI.getInquirerComboBox().getSelectedItem().toString().split("\\s+")[0]);
         int missingPersonID = Integer
                 .valueOf(editInquiryUI.getMissingPersonComboBox().getSelectedItem().toString().split("\\s+")[0]);
-        String dateOfInquiry = editInquiryUI.getDateOfInquiryTextField().getText();
         String infoProvided = editInquiryUI.getInfoProvidedTextArea().getText();
         int lastKnownLocationID = Integer
                 .valueOf(editInquiryUI.getLastKnownLocationComboBox().getSelectedItem().toString().split("\\s+")[0]);
@@ -601,9 +643,14 @@ public class Controller {
         Inquiry inquiry = inquiries.get(currEditInquiryID);
         inquiry.setInquirer(inquirerObject);
         inquiry.setMissingPerson(missingPersonObject);
-        inquiry.setDateOfInquiry(dateOfInquiry);
+        inquiry.setDateOfInquiry(LocalDateTime.now().toString().split("T")[0]);
         inquiry.setInfoProvided(infoProvided);
         inquiry.setLastKnownLocation(location);
+
+        db.initializeConnection();
+        Date date = Date.valueOf(LocalDateTime.now().toLocalDate());
+        db.updateInquiry(currEditInquiryID, inquirerID, missingPersonID, lastKnownLocationID, date, infoProvided);
+        db.close();
 
         updateInquiries();
 

@@ -7,14 +7,12 @@ public class EditInquiryUI {
 
     private JLabel inquirerLabel;
     private JLabel missingPersonLabel;
-    private JLabel dateOfInquiryLabel;
     private JLabel infoProvidedLabel;
     private JLabel lastKnownLocationLabel;
     private JLabel locationNotFoundLabel;
 
     private JComboBox<String> inquirerComboBox;
     private JComboBox<String> missingPersonComboBox;
-    private JTextField dateOfInquiryTextField;
     private JTextArea infoProvidedTextArea;
     private JComboBox<String> lastKnownLocationComboBox;
     private JButton addLocationButton;
@@ -29,9 +27,6 @@ public class EditInquiryUI {
 
         missingPersonLabel = new JLabel("Missing person:");
         missingPersonComboBox = new JComboBox<>(new String[0]);
-
-        dateOfInquiryLabel = new JLabel("Date:");
-        dateOfInquiryTextField = new JTextField("YYYY-MM-DD", 20);
 
         infoProvidedLabel = new JLabel("Info:");
         infoProvidedTextArea = new JTextArea("", 10, 20);
@@ -54,7 +49,6 @@ public class EditInquiryUI {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(inquirerLabel)
                         .addComponent(missingPersonLabel)
-                        .addComponent(dateOfInquiryLabel)
                         .addComponent(infoProvidedLabel)
                         .addComponent(lastKnownLocationLabel)
                         .addComponent(locationNotFoundLabel)
@@ -62,7 +56,6 @@ public class EditInquiryUI {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(inquirerComboBox)
                         .addComponent(missingPersonComboBox)
-                        .addComponent(dateOfInquiryTextField)
                         .addComponent(infoProvidedTextArea)
                         .addComponent(lastKnownLocationComboBox)
                         .addComponent(addLocationButton)
@@ -74,9 +67,6 @@ public class EditInquiryUI {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(missingPersonLabel)
                         .addComponent(missingPersonComboBox))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(dateOfInquiryLabel)
-                        .addComponent(dateOfInquiryTextField))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(infoProvidedLabel)
                         .addComponent(infoProvidedTextArea))
@@ -114,14 +104,6 @@ public class EditInquiryUI {
 
     public void setMissingPersonLabel(JLabel missingPersonLabel) {
         this.missingPersonLabel = missingPersonLabel;
-    }
-
-    public JLabel getDateOfInquiryLabel() {
-        return dateOfInquiryLabel;
-    }
-
-    public void setDateOfInquiryLabel(JLabel dateOfInquiryLabel) {
-        this.dateOfInquiryLabel = dateOfInquiryLabel;
     }
 
     public JLabel getInfoProvidedLabel() {
@@ -162,14 +144,6 @@ public class EditInquiryUI {
 
     public void setMissingPersonComboBox(JComboBox<String> missingPersonComboBox) {
         this.missingPersonComboBox = missingPersonComboBox;
-    }
-
-    public JTextField getDateOfInquiryTextField() {
-        return dateOfInquiryTextField;
-    }
-
-    public void setDateOfInquiryTextField(JTextField dateOfInquiryTextField) {
-        this.dateOfInquiryTextField = dateOfInquiryTextField;
     }
 
     public JTextArea getInfoProvidedTextArea() {
