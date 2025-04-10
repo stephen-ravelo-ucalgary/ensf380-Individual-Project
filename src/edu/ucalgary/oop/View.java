@@ -22,6 +22,8 @@ public class View extends JFrame {
     WaterUI waterUI;
     SupplyAllocateToPersonUI supplyAllocateToPersonUI;
     SupplyAllocateToLocationUI supplyAllocateToLocationUI;
+
+    EditMenuUI editMenuUI;
     
     public View() {
         mainMenuUI = new MainMenuUI();
@@ -37,6 +39,8 @@ public class View extends JFrame {
         waterUI = new WaterUI();
         supplyAllocateToPersonUI = new SupplyAllocateToPersonUI();
         supplyAllocateToLocationUI = new SupplyAllocateToLocationUI();
+
+        editMenuUI = new EditMenuUI();
 
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -56,11 +60,30 @@ public class View extends JFrame {
         cards.add(waterUI.getPanel(), "WaterUI");
         cards.add(supplyAllocateToPersonUI.getPanel(), "SupplyAllocateToPersonUI");
         cards.add(supplyAllocateToLocationUI.getPanel(), "SupplyAllocateToLocationUI");
+        
+        cards.add(editMenuUI.getPanel(), "EditMenuUI");
 
         showMainMenuUI();
 
         pane = frame.getContentPane();
         pane.add(cards, BorderLayout.CENTER);
+    }
+
+    public EditMenuUI getEditMenuUI() {
+        return editMenuUI;
+    }
+
+    public void setEditMenuUI(EditMenuUI editMenuUI) {
+        this.editMenuUI = editMenuUI;
+    }
+
+    public void showEditMenuUI() {
+        frame.setSize(400, 225);
+        frame.setTitle("Edit");
+        editMenuUI.getPanel().revalidate();
+        editMenuUI.getPanel().repaint();
+        CardLayout cl = (CardLayout) (cards.getLayout());
+        cl.show(cards, "EditMenuUI");
     }
 
     public void showDisasterVictimUI() {

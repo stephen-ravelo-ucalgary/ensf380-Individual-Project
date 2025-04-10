@@ -81,7 +81,7 @@ public class Controller {
         MedicalRecordUI medicalRecordUI = view.getMedicalRecordUI();
         InquiryUI inquiryUI = view.getInquiryUI();
         LocationUI locationUI = view.getLocationUI();
-
+        
         SupplyUI supplyUI = view.getSupplyUI();
         PersonalBelongingUI personalBelongingUI = view.getPersonalBelongingUI();
         CotUI cotUI = view.getCotUI();
@@ -89,10 +89,13 @@ public class Controller {
         WaterUI waterUI = view.getWaterUI();
         SupplyAllocateToPersonUI supplyAllocateToPersonUI = view.getSupplyAllocateToPersonUI();
         SupplyAllocateToLocationUI supplyAllocateToLocationUI = view.getSupplyAllocateToLocationUI();
-
+        
+        EditMenuUI editMenuUI = view.getEditMenuUI();
+        
         mainMenuUI.getCreateDisasterVictimEntryButton().addActionListener(e -> view.showDisasterVictimUI());
         mainMenuUI.getCreateInquiryButton().addActionListener(e -> view.showInquiryUI());
         mainMenuUI.getAllocateSupplyButton().addActionListener(e -> view.showSupplyUI());
+        mainMenuUI.getEditExistingDataButton().addActionListener(e -> view.showEditMenuUI());
         mainMenuUI.getAddLocationButton().addActionListener(e -> view.showLocationUI());
 
         disasterVictimUI.getMedicalRecordButton().addActionListener(e -> view.showMedicalRecordUI());
@@ -136,6 +139,8 @@ public class Controller {
 
         locationUI.getMainMenuButton().addActionListener(e -> view.showMainMenuUI());
         locationUI.getSubmitButton().addActionListener(e -> submitLocationForm());
+
+        editMenuUI.getMainMenuButton().addActionListener(e -> view.showMainMenuUI());
     }
 
     private void reset() {
@@ -159,23 +164,35 @@ public class Controller {
                 .setModel(new DefaultComboBoxModel<>(formattedPeople.toArray(new String[0])));
         view.getSupplyAllocateToPersonUI().getPersonComboBox()
                 .setModel(new DefaultComboBoxModel<>(formattedPeople.toArray(new String[0])));
+        view.getEditMenuUI().getPersonComboBox()
+                .setModel(new DefaultComboBoxModel<>(formattedPeople.toArray(new String[0])));
     }
 
     private void updateLocations() {
-        ArrayList<String> formatedLocations = new ArrayList<>();
+        ArrayList<String> formattedLocations = new ArrayList<>();
 
         for (Location location : locations.values()) {
-            formatedLocations.add(location.getID() + " " + location.getName());
+            formattedLocations.add(location.getID() + " " + location.getName());
         }
 
         view.getDisasterVictimUI().getLocationComboBox()
-                .setModel(new DefaultComboBoxModel<>(formatedLocations.toArray(new String[0])));
+                .setModel(new DefaultComboBoxModel<>(formattedLocations.toArray(new String[0])));
         view.getMedicalRecordUI().getLocationComboBox()
-                .setModel(new DefaultComboBoxModel<>(formatedLocations.toArray(new String[0])));
+                .setModel(new DefaultComboBoxModel<>(formattedLocations.toArray(new String[0])));
         view.getInquiryUI().getLastKnownLocationComboBox()
-                .setModel(new DefaultComboBoxModel<>(formatedLocations.toArray(new String[0])));
+                .setModel(new DefaultComboBoxModel<>(formattedLocations.toArray(new String[0])));
         view.getSupplyAllocateToLocationUI().getLocationComboBox()
-                .setModel(new DefaultComboBoxModel<>(formatedLocations.toArray(new String[0])));
+                .setModel(new DefaultComboBoxModel<>(formattedLocations.toArray(new String[0])));
+        view.getEditMenuUI().getLocationComboBox()
+                .setModel(new DefaultComboBoxModel<>(formattedLocations.toArray(new String[0])));
+    }
+
+    private void updateInquiries() {
+        ArrayList<String> formattedInquiries = new ArrayList<>();
+
+        for (Inquiry inquiry : inquiries.values()) {
+            formattedInquiries.add(inquiry.getID() + " For: " + disasterVictims.get)
+        }
     }
 
     private void submitDisasterVictimForm() {
@@ -221,6 +238,8 @@ public class Controller {
         for (DisasterVictim guy : disasterVictims.values().toArray(new DisasterVictim[0])) {
             System.out.println(guy.getASSIGNED_SOCIAL_ID() + ". " + guy.getFirstName());
         }
+
+        updatePeople();
 
         view.showMainMenuUI();
     }
