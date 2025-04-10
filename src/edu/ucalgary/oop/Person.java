@@ -75,7 +75,7 @@ public class Person {
         if (!gender.matches("(?i)^(Man|Woman|Non-binary person)$")) {
             throw new IllegalArgumentException("Invalid gender. Acceptable values are man, woman, or non-binary.");
         }
-        this.gender = gender.toLowerCase(); // Store in a consistent format
+        this.gender = gender;
     }
 
     public String getPhoneNumber() {

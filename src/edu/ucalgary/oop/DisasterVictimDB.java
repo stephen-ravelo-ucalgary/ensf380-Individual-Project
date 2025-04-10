@@ -72,6 +72,24 @@ public class DisasterVictimDB {
         return locations;
     }
 
+    public Map<Integer, Integer> selectAllPersonLocations() {
+        Map<Integer, Integer> locations = new HashMap<>();
+        try {
+            Statement myStmt = dbConnect.createStatement();
+            ResultSet results = myStmt.executeQuery("SELECT * FROM PersonLocation");
+
+            while (results.next()) {
+                locations.put(results.getInt("person_id"), results.getInt("location_id"));
+            }
+
+            results.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return locations;
+    }
+
     public Map<Integer, DisasterVictim> selectAllPeople() {
         Map<Integer, DisasterVictim> people = new HashMap<>();
         try {
@@ -97,8 +115,11 @@ public class DisasterVictimDB {
                 }
                 person.setFamilyGroup(results.getInt("family_group"));
 
-                people.put(results.getInt("person_id"), person);
+                Map<Integer, Integer> personLocations = selectAllPersonLocations();
+                Map<Integer, Location> locations = selectAllLocations();
+                person.setLocation(locations.get(personLocations.get(results.getInt("person_id"))));
 
+                people.put(results.getInt("person_id"), person);
             }
 
             results.close();
@@ -231,6 +252,214 @@ public class DisasterVictimDB {
         }
 
         return supplies;
+    }
+
+    public void insertNewPersonLocation(int person_id, int location_id) {
+        try {
+
+            String query = "INSERT INTO PersonLocation (person_id, location_id) VALUES (?,?)";
+            PreparedStatement myStmt = dbConnect.prepareStatement(query);
+
+            myStmt.setInt(1, person_id);
+            myStmt.setInt(2, location_id);
+
+            myStmt.execute();
+
+            myStmt.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insertNewPerson(String first_name, String last_name, Date date_of_birth, String gender, String comments,
+            String phone_number, int family_group) {
+        try {
+
+            String query = "INSERT INTO Person (first_name, last_name, date_of_birth, gender, comments, phone_number, family_group) VALUES (?,?,?,?,?,?,?)";
+            PreparedStatement myStmt = dbConnect.prepareStatement(query);
+
+            myStmt.setString(1, first_name);
+            myStmt.setString(2, last_name);
+            myStmt.setDate(3, date_of_birth);
+            myStmt.setString(4, gender);
+            myStmt.setString(5, comments);
+            myStmt.setString(6, phone_number);
+            myStmt.setInt(7, family_group);
+
+            myStmt.execute();
+
+            myStmt.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updatePerson(int id, String first_name, String last_name, Date date_of_birth, String gender,
+            String comments, String phone_number, int family_group) {
+        try {
+            String query = "UPDATE Person SET first_name = ?, last_name = ?, date_of_birth = ?, gender = ?, comments = ?, phone_number = ?, family_group = ? WHERE person_id = ?";
+            PreparedStatement myStmt = dbConnect.prepareStatement(query);
+
+            myStmt.setString(1, first_name);
+            myStmt.setString(2, last_name);
+            myStmt.setDate(3, date_of_birth);
+            myStmt.setString(4, gender);
+            myStmt.setString(5, comments);
+            myStmt.setString(6, phone_number);
+            myStmt.setInt(7, family_group);
+            myStmt.setInt(8, id);
+
+            myStmt.execute();
+
+            myStmt.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insertNewLocation(String name, String address) {
+        try {
+
+            String query = "INSERT INTO Location (name, address) VALUES (?,?)";
+            PreparedStatement myStmt = dbConnect.prepareStatement(query);
+
+            myStmt.setString(1, name);
+            myStmt.setString(2, address);
+
+            myStmt.execute();
+
+            myStmt.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateLocation(int id, String name, String address) {
+        try {
+
+            String query = "UPDATE Location SET name = ?, address = ? WHERE location_id = id";
+            PreparedStatement myStmt = dbConnect.prepareStatement(query);
+
+            myStmt.setString(1, name);
+            myStmt.setString(2, address);
+            myStmt.setInt(3, id);
+
+            myStmt.execute();
+
+            myStmt.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    
+    public void insertNewInquiry(int inquirer_id, int seeking_id, int location_id, Date date_of_inquiry,
+            String comments) {
+                try {
+                    
+            String query = "INSERT INTO Inquiry (inquirer_id, seeking_id, location_id, date_of_inquiry, comments) VALUES (?,?,?,?,?)";
+            PreparedStatement myStmt = dbConnect.prepareStatement(query);
+
+            myStmt.setInt(1, inquirer_id);
+            myStmt.setInt(2, seeking_id);
+            myStmt.setInt(3, location_id);
+            myStmt.setDate(4, date_of_inquiry);
+            myStmt.setString(5, comments);
+            
+            myStmt.execute();
+            
+            myStmt.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void updateInquiry(int id, int inquirer_id, int seeking_id, int location_id, Date date_of_inquiry,
+            String comments) {
+        try {
+
+            String query = "UPDATE Inquiry SET inquirer_id = ?, seeking_id = ?, location_id = ?, date_of_inquiry = ?, comments = ? WHERE inquiry_id = ?";
+            PreparedStatement myStmt = dbConnect.prepareStatement(query);
+
+            myStmt.setInt(1, inquirer_id);
+            myStmt.setInt(2, seeking_id);
+            myStmt.setInt(3, location_id);
+            myStmt.setDate(4, date_of_inquiry);
+            myStmt.setString(5, comments);
+            myStmt.setInt(6, id);
+
+            myStmt.execute();
+
+            myStmt.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insertNewSupply(String type, String comments) {
+        try {
+            
+            String query = "INSERT INTO Supply (type, comments) VALUES (?,?)";
+            PreparedStatement myStmt = dbConnect.prepareStatement(query);
+            
+            myStmt.setString(1, type);
+            myStmt.setString(2, comments);
+
+            myStmt.execute();
+
+            myStmt.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insertNewMedicalRecord(int location_id, int person_id, Date date_of_treatment,
+            String treatment_details) {
+        try {
+
+            String query = "INSERT INTO MedicalRecord (location_id, person_id, date_of_treatment, treatment_details) VALUES (?,?,?,?)";
+            PreparedStatement myStmt = dbConnect.prepareStatement(query);
+
+            myStmt.setInt(1, location_id);
+            myStmt.setInt(2, person_id);
+            myStmt.setDate(3, date_of_treatment);
+            myStmt.setString(4, treatment_details);
+
+            myStmt.execute();
+
+            myStmt.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insertNewSupplyAllocation(int supply_id, Object person_id, Object location_id, Date allocation_date) {
+        try {
+
+            String query = "INSERT INTO SupplyAllocation (supply_id, person_id, location_id, allocation_date) VALUES (?,?,?,?)";
+            PreparedStatement myStmt = dbConnect.prepareStatement(query);
+
+            myStmt.setInt(1, supply_id);
+            myStmt.setObject(2, person_id);
+            myStmt.setObject(3, location_id);
+            myStmt.setDate(4, allocation_date);
+
+            myStmt.execute();
+
+            myStmt.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {

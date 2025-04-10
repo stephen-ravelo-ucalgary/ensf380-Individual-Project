@@ -24,7 +24,10 @@ public class View extends JFrame {
     SupplyAllocateToLocationUI supplyAllocateToLocationUI;
 
     EditMenuUI editMenuUI;
-    
+    EditDisasterVictimUI editDisasterVictimUI;
+    EditLocationUI editLocationUI;
+    EditInquiryUI editInquiryUI;
+
     public View() {
         mainMenuUI = new MainMenuUI();
         disasterVictimUI = new DisasterVictimUI();
@@ -41,6 +44,9 @@ public class View extends JFrame {
         supplyAllocateToLocationUI = new SupplyAllocateToLocationUI();
 
         editMenuUI = new EditMenuUI();
+        editDisasterVictimUI = new EditDisasterVictimUI();
+        editLocationUI = new EditLocationUI();
+        editInquiryUI = new EditInquiryUI();
 
         frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -60,13 +66,40 @@ public class View extends JFrame {
         cards.add(waterUI.getPanel(), "WaterUI");
         cards.add(supplyAllocateToPersonUI.getPanel(), "SupplyAllocateToPersonUI");
         cards.add(supplyAllocateToLocationUI.getPanel(), "SupplyAllocateToLocationUI");
-        
+
         cards.add(editMenuUI.getPanel(), "EditMenuUI");
+        cards.add(editDisasterVictimUI.getPanel(), "EditDisasterVictimUI");
+        cards.add(editLocationUI.getPanel(), "EditLocationUI");
+        cards.add(editInquiryUI.getPanel(), "EditInquiryUI");
 
         showMainMenuUI();
 
         pane = frame.getContentPane();
         pane.add(cards, BorderLayout.CENTER);
+    }
+
+    public EditDisasterVictimUI getEditDisasterVictimUI() {
+        return editDisasterVictimUI;
+    }
+
+    public void setEditDisasterVictimUI(EditDisasterVictimUI editDisasterVictimUI) {
+        this.editDisasterVictimUI = editDisasterVictimUI;
+    }
+
+    public EditLocationUI getEditLocationUI() {
+        return editLocationUI;
+    }
+
+    public void setEditLocationUI(EditLocationUI editLocationUI) {
+        this.editLocationUI = editLocationUI;
+    }
+
+    public EditInquiryUI getEditInquiryUI() {
+        return editInquiryUI;
+    }
+
+    public void setEditInquiryUI(EditInquiryUI editInquiryUI) {
+        this.editInquiryUI = editInquiryUI;
     }
 
     public EditMenuUI getEditMenuUI() {
@@ -78,7 +111,7 @@ public class View extends JFrame {
     }
 
     public void showEditMenuUI() {
-        frame.setSize(400, 225);
+        frame.setSize(400, 200);
         frame.setTitle("Edit");
         editMenuUI.getPanel().revalidate();
         editMenuUI.getPanel().repaint();
@@ -93,6 +126,15 @@ public class View extends JFrame {
         disasterVictimUI.getPanel().repaint();
         CardLayout cl = (CardLayout) (cards.getLayout());
         cl.show(cards, "DisasterVictimUI");
+    }
+
+    public void showEditDisasterVictimUI() {
+        frame.setSize(400, 500);
+        frame.setTitle("Edit Person");
+        editDisasterVictimUI.getPanel().revalidate();
+        editDisasterVictimUI.getPanel().repaint();
+        CardLayout cl = (CardLayout) (cards.getLayout());
+        cl.show(cards, "EditDisasterVictimUI");
     }
 
     public void showMainMenuUI() {
@@ -120,6 +162,15 @@ public class View extends JFrame {
         inquiryUI.getPanel().repaint();
         CardLayout cl = (CardLayout) (cards.getLayout());
         cl.show(cards, "InquiryUI");
+    }
+
+    public void showEditInquiryUI() {
+        frame.setSize(400, 400);
+        frame.setTitle("Edit Inquiry");
+        editInquiryUI.getPanel().revalidate();
+        editInquiryUI.getPanel().repaint();
+        CardLayout cl = (CardLayout) (cards.getLayout());
+        cl.show(cards, "EditInquiryUI");
     }
 
     public void showSupplyUI() {
@@ -175,7 +226,7 @@ public class View extends JFrame {
         CardLayout cl = (CardLayout) (cards.getLayout());
         cl.show(cards, "SupplyAllocateToPersonUI");
     }
-    
+
     public void showSupplyAllocateToLocationUI() {
         frame.setSize(400, 125);
         frame.setTitle("Allocate Supply to Location");
@@ -192,6 +243,15 @@ public class View extends JFrame {
         locationUI.getPanel().repaint();
         CardLayout cl = (CardLayout) (cards.getLayout());
         cl.show(cards, "LocationUI");
+    }
+
+    public void showEditLocationUI() {
+        frame.setSize(400, 150);
+        frame.setTitle("Edit Location");
+        editLocationUI.getPanel().revalidate();
+        editLocationUI.getPanel().repaint();
+        CardLayout cl = (CardLayout) (cards.getLayout());
+        cl.show(cards, "EditLocationUI");
     }
 
     public CotUI getCotUI() {
@@ -314,5 +374,4 @@ public class View extends JFrame {
         this.supplyAllocateToLocationUI = supplyAllocateToLocationUI;
     }
 
-    
 }

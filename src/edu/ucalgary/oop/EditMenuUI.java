@@ -8,12 +8,10 @@ public class EditMenuUI implements UI {
     private JComboBox<String> personComboBox;
     private JComboBox<String> locationComboBox;
     private JComboBox<String> inquiryComboBox;
-    private JComboBox<String> medicalRecordComboBox;
 
     private JButton editPersonButton;
     private JButton editLocationButton;
     private JButton editInquiryButton;
-    private JButton editMedicalRecordButton;
 
     private JButton mainMenuButton;
 
@@ -29,9 +27,6 @@ public class EditMenuUI implements UI {
         inquiryComboBox = new JComboBox<>(new String[0]);
         editInquiryButton = new JButton("Edit Inquiry");
 
-        medicalRecordComboBox = new JComboBox<>(new String[0]);
-        editMedicalRecordButton = new JButton("Edit Medical Record");
-
         mainMenuButton = new JButton("Main Menu");
 
         GroupLayout layout = new GroupLayout(panel);
@@ -44,13 +39,11 @@ public class EditMenuUI implements UI {
                         .addComponent(editPersonButton)
                         .addComponent(editLocationButton)
                         .addComponent(editInquiryButton)
-                        .addComponent(editMedicalRecordButton)
                         .addComponent(mainMenuButton))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(personComboBox)
                         .addComponent(locationComboBox)
-                        .addComponent(inquiryComboBox)
-                        .addComponent(medicalRecordComboBox)));
+                        .addComponent(inquiryComboBox)));
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(editPersonButton)
@@ -61,9 +54,6 @@ public class EditMenuUI implements UI {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(editInquiryButton)
                         .addComponent(inquiryComboBox))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(editMedicalRecordButton)
-                        .addComponent(medicalRecordComboBox))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(mainMenuButton)));
     }
@@ -100,14 +90,6 @@ public class EditMenuUI implements UI {
         this.inquiryComboBox = inquiryComboBox;
     }
 
-    public JComboBox<String> getMedicalRecordComboBox() {
-        return medicalRecordComboBox;
-    }
-
-    public void setMedicalRecordComboBox(JComboBox<String> medicalRecordComboBox) {
-        this.medicalRecordComboBox = medicalRecordComboBox;
-    }
-
     public JButton getEditPersonButton() {
         return editPersonButton;
     }
@@ -130,14 +112,6 @@ public class EditMenuUI implements UI {
 
     public void setEditInquiryButton(JButton editInquiryButton) {
         this.editInquiryButton = editInquiryButton;
-    }
-
-    public JButton getEditMedicalRecordButton() {
-        return editMedicalRecordButton;
-    }
-
-    public void setEditMedicalRecordButton(JButton editMedicalRecordButton) {
-        this.editMedicalRecordButton = editMedicalRecordButton;
     }
 
     public JButton getMainMenuButton() {

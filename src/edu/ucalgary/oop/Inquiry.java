@@ -73,7 +73,7 @@ public class Inquiry {
     }
 
     public String getLogDetails() {
-        String str = "Inquirer: %s\nMissing Person: %s\nInfo: %s\nLast Known Location: %s";
+        String str = "Inquirer: %s Missing Person: %s Info: %s Last Known Location: %s";
         return String.format(str, inquirer.getFirstName(), missingPerson.getFirstName(), infoProvided,
                 lastKnownLocation.getName());
     }

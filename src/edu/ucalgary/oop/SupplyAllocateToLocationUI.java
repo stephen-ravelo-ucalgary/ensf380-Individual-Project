@@ -9,15 +9,12 @@ public class SupplyAllocateToLocationUI implements UI {
     private JComboBox<String> locationComboBox;
 
     private JButton submitButton;
-    private JButton backButton;
 
     public SupplyAllocateToLocationUI() {
         panel = new JPanel();
 
         locationComboBox = new JComboBox<>(new String[0]);
         submitButton = new JButton("Submit");
-
-        backButton = new JButton("Back");
 
         GroupLayout layout = new GroupLayout(panel);
         layout.setAutoCreateGaps(true);
@@ -26,16 +23,13 @@ public class SupplyAllocateToLocationUI implements UI {
 
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(locationComboBox)
-                        .addComponent(backButton))
+                        .addComponent(locationComboBox))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(submitButton)));
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(locationComboBox)
-                        .addComponent(submitButton))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(backButton)));
+                        .addComponent(submitButton)));
     }
 
     public JPanel getPanel() {
@@ -61,14 +55,4 @@ public class SupplyAllocateToLocationUI implements UI {
     public void setSubmitButton(JButton submitButton) {
         this.submitButton = submitButton;
     }
-
-    public JButton getBackButton() {
-        return backButton;
-    }
-
-    public void setBackButton(JButton backButton) {
-        this.backButton = backButton;
-    }
-
-    
 }

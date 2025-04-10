@@ -84,7 +84,7 @@ public class InquiryTest {
 
     @Test
     public void testGetLogDetails() {
-        String expectedLogDetails = "Inquirer: Stephen\nMissing Person: Victor\nInfo: info\nLast Known Location: locationName";
+        String expectedLogDetails = "Inquirer: Stephen Missing Person: Victor Info: info Last Known Location: locationName";
         assertEquals("Log details should match the expected format", expectedLogDetails, inquiry.getLogDetails());
     }
 }

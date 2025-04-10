@@ -2,7 +2,7 @@ package edu.ucalgary.oop;
 
 import javax.swing.*;
 
-public class DisasterVictimUI implements UI {
+public class EditDisasterVictimUI implements UI {
     private JPanel panel;
 
     private JLabel firstNameLabel;
@@ -13,7 +13,6 @@ public class DisasterVictimUI implements UI {
     private JLabel phoneNumberLabel;
     private JLabel familyGroupLabel;
     private JLabel medicalRecordCountLabel;
-    private JLabel locationLabel;
 
     private JTextField firstNameTextField;
     private JTextField lastNameTextField;
@@ -24,14 +23,13 @@ public class DisasterVictimUI implements UI {
     private JTextField familyGroupTextField;
     private int medicalRecordCount = 0;
     private JButton medicalRecordButton;
-    private JComboBox<String> locationComboBox;
     private JButton submitButton;
     private JButton mainMenuButton;
 
     private String[] genders = { "Man", "Woman", "Non-binary person" };
     private String[] locations = {};
 
-    public DisasterVictimUI() {
+    public EditDisasterVictimUI() {
         panel = new JPanel();
 
         firstNameLabel = new JLabel("First Name:");
@@ -58,9 +56,6 @@ public class DisasterVictimUI implements UI {
         medicalRecordCountLabel = new JLabel("Medical Records: " + medicalRecordCount);
         medicalRecordButton = new JButton("Add Medical Record");
 
-        locationLabel = new JLabel("Location:");
-        locationComboBox = new JComboBox<String>(locations);
-
         submitButton = new JButton("Submit");
         mainMenuButton = new JButton("Main Menu");
 
@@ -79,7 +74,6 @@ public class DisasterVictimUI implements UI {
                         .addComponent(phoneNumberLabel)
                         .addComponent(familyGroupLabel)
                         .addComponent(medicalRecordCountLabel)
-                        .addComponent(locationLabel)
                         .addComponent(mainMenuButton))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(firstNameTextField)
@@ -90,7 +84,6 @@ public class DisasterVictimUI implements UI {
                         .addComponent(phoneNumberTextField)
                         .addComponent(familyGroupTextField)
                         .addComponent(medicalRecordButton)
-                        .addComponent(locationComboBox)
                         .addComponent(submitButton)));
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -117,9 +110,6 @@ public class DisasterVictimUI implements UI {
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(medicalRecordCountLabel)
                         .addComponent(medicalRecordButton))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(locationLabel)
-                        .addComponent(locationComboBox))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(mainMenuButton)
                         .addComponent(submitButton)));
@@ -197,14 +187,6 @@ public class DisasterVictimUI implements UI {
         this.medicalRecordCountLabel = medicalRecordCountLabel;
     }
 
-    public JLabel getLocationLabel() {
-        return locationLabel;
-    }
-
-    public void setLocationLabel(JLabel locationLabel) {
-        this.locationLabel = locationLabel;
-    }
-
     public JTextField getFirstNameTextField() {
         return firstNameTextField;
     }
@@ -278,20 +260,20 @@ public class DisasterVictimUI implements UI {
         this.medicalRecordButton = medicalRecordButton;
     }
 
-    public JComboBox<String> getLocationComboBox() {
-        return locationComboBox;
-    }
-
-    public void setLocationComboBox(JComboBox<String> locationComboBox) {
-        this.locationComboBox = locationComboBox;
-    }
-
     public JButton getSubmitButton() {
         return submitButton;
     }
 
     public void setSubmitButton(JButton submitButton) {
         this.submitButton = submitButton;
+    }
+
+    public JButton getMainMenuButton() {
+        return mainMenuButton;
+    }
+
+    public void setMainMenuButton(JButton mainMenuButton) {
+        this.mainMenuButton = mainMenuButton;
     }
 
     public String[] getGenders() {
@@ -308,14 +290,6 @@ public class DisasterVictimUI implements UI {
 
     public void setLocations(String[] locations) {
         this.locations = locations;
-    }
-
-    public JButton getMainMenuButton() {
-        return mainMenuButton;
-    }
-
-    public void setMainMenuButton(JButton mainMenuButton) {
-        this.mainMenuButton = mainMenuButton;
     }
 
     public void incrementMedicalRecordCount() {
