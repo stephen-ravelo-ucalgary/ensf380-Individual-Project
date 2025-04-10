@@ -6,6 +6,13 @@ import java.util.Map;
 import java.util.HashMap;
 import java.time.LocalDateTime;
 
+/**
+ * Class for executing queries specifically for the ensf380project database.
+ * 
+ * @author Stephen Ravelo<a href="mailto:stephen.ravelo@ucalgary.ca">stephen.ravelo@ucalgary.ca</a>
+ * @version 1.0
+ * @since 1.0
+ */
 public class DisasterVictimDB {
 
     public final String DBURL;
@@ -14,6 +21,12 @@ public class DisasterVictimDB {
 
     private Connection dbConnect;
 
+    /**
+     * Create a database object with specified url, username, and password.
+     * @param url A String containing the database's url.
+     * @param user A String containing an authorized username.
+     * @param pw A String containing a password for the authorized user.
+     */
     public DisasterVictimDB(String url, String user, String pw) {
         // Database URL
         this.DBURL = url;
@@ -23,6 +36,9 @@ public class DisasterVictimDB {
         this.PASSWORD = pw;
     }
 
+    /**
+     * Initialize connection to the database.
+     */
     public void initializeConnection() throws RuntimeException {
         try {
             dbConnect = DriverManager.getConnection(DBURL, USERNAME, PASSWORD);
@@ -32,18 +48,33 @@ public class DisasterVictimDB {
         }
     }
 
+    /**
+     * Get the database's URL.
+     * @return A String representing the database's URL.
+     */
     String getDburl() {
         return this.DBURL;
     }
 
+    /**
+     * Get the username of the current user.
+     * @return A String representing the username of the current user.
+     */
     String getUsername() {
         return this.USERNAME;
     }
 
+    /**
+     * Get the password of the current user.
+     * @return A String representing the password of the current user.
+     */
     String getPassword() {
         return this.PASSWORD;
     }
 
+    /**
+     * Close and cleanup connection to database.
+     */
     public void close() {
         try {
             dbConnect.close();
@@ -52,6 +83,10 @@ public class DisasterVictimDB {
         }
     }
 
+    /**
+     * Select all locations in the database.
+     * @return A Map of Integer, Location representing the location IDs and Location objects.
+     */
     public Map<Integer, Location> selectAllLocations() {
         Map<Integer, Location> locations = new HashMap<>();
         try {
@@ -72,6 +107,10 @@ public class DisasterVictimDB {
         return locations;
     }
 
+    /**
+     * Select all locations of people in the database.
+     * @return A Map of Integer, Integer representing the person ID and location ID.
+     */
     public Map<Integer, Integer> selectAllPersonLocations() {
         Map<Integer, Integer> locations = new HashMap<>();
         try {
@@ -90,6 +129,10 @@ public class DisasterVictimDB {
         return locations;
     }
 
+    /**
+     * Select all people in the database.
+     * @return A Map of Integer, DisasterVictim representing the person ID and DisasterVictim object.
+     */
     public Map<Integer, DisasterVictim> selectAllPeople() {
         Map<Integer, DisasterVictim> people = new HashMap<>();
         try {
@@ -130,6 +173,10 @@ public class DisasterVictimDB {
         return people;
     }
 
+    /**
+     * Select all medical records in the database.
+     * @return A Map of Integer, MedicalRecord representing the medical record ID and MedicalRecord object.
+     */
     public Map<Integer, MedicalRecord> selectAllMedicalRecords() {
         Map<Integer, MedicalRecord> medicalRecords = new HashMap<>();
         try {
@@ -155,21 +202,10 @@ public class DisasterVictimDB {
         return medicalRecords;
     }
 
-    public void printMedicalRecordNames() {
-        try {
-            Statement myStmt = dbConnect.createStatement();
-            ResultSet results = myStmt.executeQuery("SELECT * FROM MedicalRecord");
-
-            while (results.next()) {
-                System.out.println(results.getString("medical_record_id"));
-            }
-
-            results.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
+    /**
+     * Select all inquiries in the database.
+     * @return A Map of Integer, Inquiry representing the inquiry ID and Inquiry Object.
+     */
     public Map<Integer, Inquiry> selectAllInquiries() {
         Map<Integer, Inquiry> inquiries = new HashMap<>();
         try {
@@ -198,6 +234,10 @@ public class DisasterVictimDB {
         return inquiries;
     }
 
+    /**
+     * Select all allocations of supply in the database.
+     * @return A Map of Integer, String[] representing the supply ID and array of results.
+     */
     public Map<Integer, String[]> selectAllSupplyAllocation() {
         Map<Integer, String[]> allocations = new HashMap<>();
         try {
@@ -218,6 +258,10 @@ public class DisasterVictimDB {
         return allocations;
     }
 
+    /**
+     * Select all supplies in the database.
+     * @return A Map of Integer, Supply representing the supply ID and Supply Object.
+     */
     public Map<Integer, Supply> selectAllSupplies() {
         Map<Integer, Supply> supplies = new HashMap<>();
         try {
@@ -254,6 +298,11 @@ public class DisasterVictimDB {
         return supplies;
     }
 
+    /**
+     * Insert new location of person into database.
+     * @param person_id int representing the person's ID.
+     * @param location_id int representing the location ID.
+     */
     public void insertNewPersonLocation(int person_id, int location_id) {
         try {
 
@@ -272,6 +321,16 @@ public class DisasterVictimDB {
         }
     }
 
+    /**
+     * Insert new person into database.
+     * @param first_name String representing the person's first name.
+     * @param last_name String representing the person's last name.
+     * @param date_of_birth Date representing the person's date of birth.
+     * @param gender String representing the person's gender.
+     * @param comments String representing the any notes on the person.
+     * @param phone_number String representing the person's phone number.
+     * @param family_group int representing the person's family group.
+     */
     public void insertNewPerson(String first_name, String last_name, Date date_of_birth, String gender, String comments,
             String phone_number, int family_group) {
         try {
@@ -296,6 +355,17 @@ public class DisasterVictimDB {
         }
     }
 
+    /**
+     * Update a person in the database.
+     * @param id int representing the ID of the person to update.
+     * @param first_name String representing the person's first name.
+     * @param last_name String representing the person's last name.
+     * @param date_of_birth Date representing the person's date of birth.
+     * @param gender String representing the person's gender.
+     * @param comments String representing the any notes on the person.
+     * @param phone_number String representing the person's phone number.
+     * @param family_group int representing the person's family group.
+     */
     public void updatePerson(int id, String first_name, String last_name, Date date_of_birth, String gender,
             String comments, String phone_number, int family_group) {
         try {
@@ -320,6 +390,11 @@ public class DisasterVictimDB {
         }
     }
 
+    /**
+     * Insert new location into database.
+     * @param name String representing the location name. 
+     * @param address String representing the location address. 
+     */
     public void insertNewLocation(String name, String address) {
         try {
 
@@ -338,6 +413,12 @@ public class DisasterVictimDB {
         }
     }
 
+    /**
+     * Update a location in database.
+     * @param id int representing the ID of the location to update. 
+     * @param name String representing the location name. 
+     * @param address String representing the location address. 
+     */
     public void updateLocation(int id, String name, String address) {
         try {
 
@@ -357,7 +438,14 @@ public class DisasterVictimDB {
         }
     }
 
-    
+    /**
+     * Insert new inquiry into database.
+     * @param inquirer_id int representing the ID of the inquirer.
+     * @param seeking_id int representing the ID of the missing person.
+     * @param location_id int representing the ID of the last known location.
+     * @param date_of_inquiry Date representing the current date.
+     * @param comments String representing any info provided.
+     */
     public void insertNewInquiry(int inquirer_id, int seeking_id, int location_id, Date date_of_inquiry,
             String comments) {
                 try {
@@ -380,6 +468,15 @@ public class DisasterVictimDB {
         }
     }
     
+    /**
+     * Insert new inquiry into database.
+     * @param id int representing the ID of the inquiry to update.
+     * @param inquirer_id int representing the ID of the inquirer.
+     * @param seeking_id int representing the ID of the missing person.
+     * @param location_id int representing the ID of the last known location.
+     * @param date_of_inquiry Date representing the current date.
+     * @param comments String representing any info provided.
+     */
     public void updateInquiry(int id, int inquirer_id, int seeking_id, int location_id, Date date_of_inquiry,
             String comments) {
         try {
@@ -403,6 +500,11 @@ public class DisasterVictimDB {
         }
     }
 
+    /**
+     * Insert new supply into database.
+     * @param type String representing the type of supply.
+     * @param comments String representing any supply details.
+     */
     public void insertNewSupply(String type, String comments) {
         try {
             
@@ -421,6 +523,13 @@ public class DisasterVictimDB {
         }
     }
 
+    /**
+     * Insert new medical record into the database;
+     * @param location_id int representing the ID of the location.
+     * @param person_id int representing the ID of the person.
+     * @param date_of_treatment Date representing the date of treatment.
+     * @param treatment_details String representing details of the treatment.
+     */
     public void insertNewMedicalRecord(int location_id, int person_id, Date date_of_treatment,
             String treatment_details) {
         try {
@@ -442,6 +551,13 @@ public class DisasterVictimDB {
         }
     }
 
+    /**
+     * Insert allocation of supply into database.
+     * @param supply_id int representing the supply ID.
+     * @param person_id int representing the person ID.
+     * @param location_id int representing the location ID.
+     * @param allocation_date Date representing the current date.
+     */
     public void insertNewSupplyAllocation(int supply_id, Object person_id, Object location_id, Date allocation_date) {
         try {
 
@@ -462,6 +578,10 @@ public class DisasterVictimDB {
         }
     }
 
+    /**
+     * Delete any water that is allocated to a person and a day old.
+     * @deprecated
+     */
     public void deleteExpiredWater() {
         // TODO
         //try {
@@ -476,19 +596,5 @@ public class DisasterVictimDB {
         //} catch (SQLException e) {
         //    e.printStackTrace();
         //}
-    }
-
-    public static void main(String[] args) {
-
-        DisasterVictimDB db = new DisasterVictimDB("jdbc:postgresql://localhost/ensf380project", "oop", "ucalgary");
-        db.initializeConnection();
-
-        Map<Integer, MedicalRecord> medicalRecords = db.selectAllMedicalRecords();
-
-        for (MedicalRecord medicalRecord : medicalRecords.values()) {
-            System.out.println(medicalRecord.getID());
-        }
-
-        db.close();
     }
 }

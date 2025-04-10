@@ -7,6 +7,13 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
+/**
+ * Controller for all app logic.
+ * 
+ * @author Stephen Ravelo <a href="mailto:stephen.ravelo@ucalgary.ca">stephen.ravelo@ucalgary.ca</a>
+ * @version 1.0.1
+ * @since 1.0
+ */
 public class Controller {
     private View view;
     private DisasterVictimDB db;
@@ -30,6 +37,10 @@ public class Controller {
     private Map<Integer, Inquiry> inquiries = new HashMap<>();
     private Map<Integer, Supply> supplies = new HashMap<>();
 
+    /**
+     * Create a controller with specified view.
+     * @param view The controller's display.
+     */
     public Controller(View view) {
         this.view = view;
 
@@ -74,12 +85,15 @@ public class Controller {
         initView();
     }
 
-    public void initView() {
+    private void initView() {
         updateLocations();
         updatePeople();
         updateInquiries();
     }
 
+    /**
+     * Initialize the controller.
+     */
     public void initController() {
         MainMenuUI mainMenuUI = view.getMainMenuUI();
         DisasterVictimUI disasterVictimUI = view.getDisasterVictimUI();
@@ -559,6 +573,7 @@ public class Controller {
         currMedicalRecords = new ArrayList<MedicalRecord>();
         editDisasterVictimUI.resetMedicalRecordCount();
 
+        disasterVictims = db.selectAllPeople();
         db.close();
 
         updatePeople();
@@ -597,6 +612,7 @@ public class Controller {
 
         db.initializeConnection();
         db.updateLocation(currEditLocationID, name, address);
+        locations = db.selectAllLocations();
         db.close();
 
         updateLocations();
@@ -649,6 +665,7 @@ public class Controller {
         db.initializeConnection();
         Date date = Date.valueOf(LocalDateTime.now().toLocalDate());
         db.updateInquiry(currEditInquiryID, inquirerID, missingPersonID, lastKnownLocationID, date, infoProvided);
+        inquiries = db.selectAllInquiries();
         db.close();
 
         updateInquiries();
