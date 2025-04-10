@@ -2,6 +2,7 @@ package edu.ucalgary.oop;
 
 import javax.swing.*;
 
+
 public class InquiryUI implements UI {
     private JPanel panel;
 
