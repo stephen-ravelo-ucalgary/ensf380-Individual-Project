@@ -1,8 +1,10 @@
 package edu.ucalgary.oop;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.Map;
 import java.util.HashMap;
+import java.time.LocalDateTime;
 
 public class DisasterVictimDB {
 
@@ -458,6 +460,22 @@ public class DisasterVictimDB {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void deleteExpiredWater() {
+        // TODO
+        //try {
+        //    Date date = Date.valueOf(LocalDateTime.now().toLocalDate());
+        //    String query = "DELETE FROM Supply WHERE";
+        //    PreparedStatement myStmt = dbConnect.prepareStatement(query);
+
+        //    myStmt.execute();
+
+        //    myStmt.close();
+
+        //} catch (SQLException e) {
+        //    e.printStackTrace();
+        //}
     }
 
     public static void main(String[] args) {

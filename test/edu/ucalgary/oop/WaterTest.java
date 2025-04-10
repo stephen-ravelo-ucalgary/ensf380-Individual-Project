@@ -11,13 +11,13 @@ public class WaterTest {
     @Before
     public void setUp() {
         dateAllocatedToTest = "2025-02-10";
-        water = new Water(dateAllocatedToTest, 1);
+        water = new Water(1, dateAllocatedToTest);
     }
 
     @Test
     public void testConstructorWithValidDateAllocated() {
         String validDate = "2024-01-12";
-        Water newWater = new Water(validDate, 1);
+        Water newWater = new Water(2, validDate);
         assertNotNull("Constructor should successfully create an instance of Water", newWater);
         assertEquals("Constructor should set the date allocated correctly", validDate, newWater.getDateAllocated());
     }
@@ -25,7 +25,7 @@ public class WaterTest {
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorWithInvalidDateFormat() {
         String invalidDate = "2024/01/12";
-        new Water(invalidDate, 1);
+        new Water(2, invalidDate);
     }
 
     @Test

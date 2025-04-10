@@ -10,7 +10,6 @@ public class PersonalBelongingUI implements UI {
     private JTextArea descriptionTextArea;
     private JButton backButton;
     private JButton submitToPersonButton;
-    private JButton submitToLocationButton;
 
     public PersonalBelongingUI() {
         panel = new JPanel();
@@ -19,7 +18,6 @@ public class PersonalBelongingUI implements UI {
         descriptionTextArea = new JTextArea("", 10, 20);
 
         submitToPersonButton = new JButton("Submit to Person");
-        submitToLocationButton = new JButton("Submit to Location");
 
         backButton = new JButton("Back");
 
@@ -31,20 +29,17 @@ public class PersonalBelongingUI implements UI {
         layout.setHorizontalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(descriptionLabel)
-                        .addComponent(submitToPersonButton)
                         .addComponent(backButton))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(descriptionTextArea)
-                        .addComponent(submitToLocationButton)));
+                        .addComponent(submitToPersonButton)));
         layout.setVerticalGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(descriptionLabel)
                         .addComponent(descriptionTextArea))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(submitToPersonButton)
-                        .addComponent(submitToLocationButton))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(backButton)));
+                        .addComponent(backButton)
+                        .addComponent(submitToPersonButton)));
     }
 
     public JPanel getPanel() {
@@ -85,13 +80,5 @@ public class PersonalBelongingUI implements UI {
 
     public void setSubmitToPersonButton(JButton submitToPersonButton) {
         this.submitToPersonButton = submitToPersonButton;
-    }
-
-    public JButton getSubmitToLocationButton() {
-        return submitToLocationButton;
-    }
-
-    public void setSubmitToLocationButton(JButton submitToLocationButton) {
-        this.submitToLocationButton = submitToLocationButton;
     }
 }

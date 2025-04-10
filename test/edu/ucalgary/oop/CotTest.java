@@ -13,12 +13,12 @@ public class CotTest {
     public void setUp() {
         roomToTest = "115";
         gridToTest = "B6";
-        cot = new Cot(roomToTest, gridToTest, 1);
+        cot = new Cot(1, roomToTest, gridToTest);
     }
 
     @Test
     public void testConstructor() {
-        Cot newCot = new Cot(roomToTest, gridToTest, 1);
+        Cot newCot = new Cot(1, roomToTest, gridToTest);
         assertNotNull("Constructor should successfully create an instance of Cot", newCot);
     }
 

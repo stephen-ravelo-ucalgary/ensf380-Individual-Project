@@ -6,9 +6,6 @@ See LICENSE.txt for more information.
 
 package edu.ucalgary.oop;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
 public class MedicalRecord {
     private Location location;
     private String treatmentDetails;

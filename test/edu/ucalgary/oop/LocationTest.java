@@ -16,20 +16,20 @@ public class LocationTest {
     public void setUp() {
         locationNameToTest = "newLocationName";
         locationAddressToTest = "newLocationAddress";
-        location = new Location("expectedLocationName", "expectedLocationAddress");
+        location = new Location(1, "expectedLocationName", "expectedLocationAddress");
 
         occupantsToTest = new ArrayList<DisasterVictim>();
-        occupantsToTest.add(new DisasterVictim("Stephen", "2025-01-18"));
-        occupantsToTest.add(new DisasterVictim("Bingben", "2025-03-12"));
+        occupantsToTest.add(new DisasterVictim(1, "Stephen"));
+        occupantsToTest.add(new DisasterVictim(2, "Bingben"));
 
         suppliesToTest = new ArrayList<Supply>();
         suppliesToTest.add(new Blanket(1));
-        suppliesToTest.add(new PersonalBelonging("description", 1));
+        suppliesToTest.add(new PersonalBelonging(2, "description"));
     }
 
     @Test
     public void testConstructor() {
-        Location newLocation = new Location(locationNameToTest, locationAddressToTest);
+        Location newLocation = new Location(2, locationNameToTest, locationAddressToTest);
         assertNotNull("Constructor should successfully create an instance of Location", newLocation);
     }
 

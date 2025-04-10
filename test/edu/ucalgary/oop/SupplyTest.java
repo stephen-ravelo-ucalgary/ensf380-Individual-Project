@@ -7,24 +7,22 @@ import static org.junit.Assert.*;
 public class SupplyTest {
     private Supply supply;
     private String typeToTest;
-    private int quantityToTest;
 
     @Before
     public void setUp() {
         typeToTest = "Blanket";
-        quantityToTest = 1;
-        supply = new Supply(typeToTest, quantityToTest);
+        supply = new Supply(1, typeToTest);
     }
 
     @Test
     public void testConstructor() {
-        Supply newSupply = new Supply(typeToTest, quantityToTest);
+        Supply newSupply = new Supply(2, typeToTest);
         assertNotNull("Constructor should successfully create an instance of Supply", newSupply);
     }
 
     @Test
     public void testSetAndGetTypeWithValidType() {
-        String validType = "PersonalBelonging";
+        String validType = "personal item";
         supply.setType(validType);
         assertEquals("setType should update and getType should return the new type", validType, supply.getType());
     }
@@ -33,12 +31,5 @@ public class SupplyTest {
     public void testSetTypeWithInvalidType() {
         String invalidType = "newType";
         supply.setType(invalidType);
-    }
-
-    @Test
-    public void testSetAndGetQuantity() {
-        int newQuantity = 2;
-        supply.setQuantity(newQuantity);
-        assertEquals("setQuantity should update and getQuantity should return the new quantity", newQuantity, supply.getQuantity());
     }
 }

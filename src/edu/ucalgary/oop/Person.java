@@ -73,7 +73,7 @@ public class Person {
 
     public void setGender(String gender) throws IllegalArgumentException {
         if (!gender.matches("(?i)^(Man|Woman|Non-binary person)$")) {
-            throw new IllegalArgumentException("Invalid gender. Acceptable values are man, woman, or non-binary.");
+            throw new IllegalArgumentException("Invalid gender. Acceptable values are Man, Woman, or Non-binary.");
         }
         this.gender = gender;
     }

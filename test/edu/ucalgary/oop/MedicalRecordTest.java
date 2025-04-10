@@ -12,15 +12,15 @@ public class MedicalRecordTest {
 
     @Before
     public void setUp() {
-        expectedLocation = new Location("expectedLocationName", "expectedLocationAddress");
-        medicalRecord = new MedicalRecord(expectedLocation, expectedTreatmentDetails, expectedDateOfTreatment);
+        expectedLocation = new Location(1, "expectedLocationName", "expectedLocationAddress");
+        medicalRecord = new MedicalRecord(1, expectedLocation, expectedTreatmentDetails, expectedDateOfTreatment);
     }
 
     @Test
     public void testConstructorWithValidDateOfTreatment() {
-        Location newLocation = new Location("newLocationName", "newLocationAddress");
+        Location newLocation = new Location(2, "newLocationName", "newLocationAddress");
         String validDateOfTreatment = "2025-01-18";
-        MedicalRecord newMedicalRecord = new MedicalRecord(newLocation, "Treatment details", validDateOfTreatment);
+        MedicalRecord newMedicalRecord = new MedicalRecord(2, newLocation, "Treatment details", validDateOfTreatment);
         assertNotNull("Constructor should successfully create an instance with a valid date of treatment",
                 newMedicalRecord);
         assertEquals("Constructor should set the date of treatment correctly", validDateOfTreatment,
@@ -30,14 +30,14 @@ public class MedicalRecordTest {
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorWithInvalidDateOfTreatmentFormat() {
         String invalidDateOfTreatment = "20250112";
-        Location newLocation = new Location("newLocationName", "newLocationAddress");
-        new MedicalRecord(newLocation, "treatmentDetails", invalidDateOfTreatment);
+        Location newLocation = new Location(2, "newLocationName", "newLocationAddress");
+        new MedicalRecord(2, newLocation, "treatmentDetails", invalidDateOfTreatment);
         // Expecting IllegalArgumentException due to invalid date format
     }
 
     @Test
     public void testSetAndGetLocation() {
-        Location newLocation = new Location("newLocationName", "newLocationAddress");
+        Location newLocation = new Location(2, "newLocationName", "newLocationAddress");
         medicalRecord.setLocation(newLocation);
         assertEquals("setLocation should update and getLocation should return the new location", newLocation,
                 medicalRecord.getLocation());

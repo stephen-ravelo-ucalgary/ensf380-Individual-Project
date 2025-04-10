@@ -10,12 +10,17 @@ public class Supply {
     }
 
     public void setType(String type) {
+        if (!type.matches("(?i)^(personal item|cot|blanket|water)$")) {
+            throw new IllegalArgumentException("Invalid type. Acceptable values are personal item, cot, blanket, water.");
+        }
         this.type = type;
     }
 
     public String getType() {
         return this.type;
     }
+
+    
 
     public int getID() {
         return ID;

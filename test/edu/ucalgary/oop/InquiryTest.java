@@ -14,18 +14,18 @@ public class InquiryTest {
 
     @Before
     public void setUp() {
-        inquirerToTest = new Person("Stephen");
-        missingPersonToTest = new DisasterVictim("Victor", "2025-01-18");
+        inquirerToTest = new Person(1, "Stephen");
+        missingPersonToTest = new DisasterVictim(2, "Victor");
         dateToTest = "2025-03-12";
         infoToTest = "info";
-        locationToTest = new Location("locationName", "locationAddress");
-        inquiry = new Inquiry(inquirerToTest, missingPersonToTest, dateToTest, infoToTest, locationToTest);
+        locationToTest = new Location(1, "locationName", "locationAddress");
+        inquiry = new Inquiry(1, inquirerToTest, missingPersonToTest, dateToTest, infoToTest, locationToTest);
     }
 
     @Test
     public void testConstructorWithValidDate() {
         String validDate = "2024-01-12";
-        Inquiry newInquiry = new Inquiry(inquirerToTest, missingPersonToTest, validDate, infoToTest, locationToTest);
+        Inquiry newInquiry = new Inquiry(2, inquirerToTest, missingPersonToTest, validDate, infoToTest, locationToTest);
         assertNotNull("Constructor should successfully create an instance of Inquiry", newInquiry);
         assertEquals("Constructor should set the birth date correctly", validDate, newInquiry.getDateOfInquiry());
     }
@@ -33,12 +33,12 @@ public class InquiryTest {
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorWithInvalidDateFormat() {
         String invalidDate = "2024/01/12";
-        new Inquiry(inquirerToTest, missingPersonToTest, invalidDate, infoToTest, locationToTest);
+        new Inquiry(2, inquirerToTest, missingPersonToTest, invalidDate, infoToTest, locationToTest);
     }
 
     @Test
     public void testSetAndGetInquirer() {
-        Person newInquirer = new Person("David");
+        Person newInquirer = new Person(3, "David");
         inquiry.setInquirer(newInquirer);
         assertEquals("setInquirer should update and getInquirer should return the new inquirer", newInquirer,
                 inquiry.getInquirer());
@@ -46,7 +46,7 @@ public class InquiryTest {
 
     @Test
     public void testSetAndGetMissingPerson() {
-        DisasterVictim newMissingPerson = new DisasterVictim("David", "2023-08-24");
+        DisasterVictim newMissingPerson = new DisasterVictim(3, "David");
         inquiry.setMissingPerson(newMissingPerson);
         assertEquals("setMissingPerson should update and getMissingPerson should return the new missing person",
                 newMissingPerson, inquiry.getMissingPerson());
@@ -76,7 +76,7 @@ public class InquiryTest {
 
     @Test
     public void testSetAndGetLastKnownLocation() {
-        Location newLocation = new Location("newLocationName", "newLocationAddress");
+        Location newLocation = new Location(2, "newLocationName", "newLocationAddress");
         inquiry.setLastKnownLocation(newLocation);
         assertEquals("setLocation should update and getLocation should return the new location", newLocation,
                 inquiry.getLastKnownLocation());

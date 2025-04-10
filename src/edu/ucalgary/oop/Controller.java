@@ -126,7 +126,6 @@ public class Controller {
 
         personalBelongingUI.getBackButton().addActionListener(e -> view.showSupplyUI());
         personalBelongingUI.getSubmitToPersonButton().addActionListener(e -> submitPersonalBelonging(true));
-        personalBelongingUI.getSubmitToLocationButton().addActionListener(e -> submitPersonalBelonging(false));
 
         cotUI.getBackButton().addActionListener(e -> view.showSupplyUI());
         cotUI.getSubmitToPersonButton().addActionListener(e -> submitCot(true));

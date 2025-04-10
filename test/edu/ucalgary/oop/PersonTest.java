@@ -13,7 +13,7 @@ public class PersonTest {
 
     @Before
     public void setUp() {
-        person = new Person(expectedFirstName, expectedDateOfBirth);
+        person = new Person(1, expectedFirstName, expectedDateOfBirth);
         person.setComments(expectedComments);
     }
 
@@ -38,7 +38,7 @@ public class PersonTest {
     @Test
     public void testBirthdateConstructorWithValidBirthDate() {
         String validBirthdate = "2017-03-20";
-        Person person = new Person("Freda", validBirthdate);
+        Person person = new Person(2, "Freda", validBirthdate);
         assertNotNull("Constructor should successfully create an instance with a valid birth date", person);
         assertEquals("Constructor should set the birth date correctly", validBirthdate, person.getDateOfBirth());
     }
@@ -46,7 +46,7 @@ public class PersonTest {
     @Test(expected = IllegalArgumentException.class)
     public void testBirthdateConstructorWithInvalidBirthDateFormat() {
         String invalidBirthDate = "20250112";
-        new Person("Fang", invalidBirthDate);
+        new Person(2, "Fang", invalidBirthDate);
         // Expecting IllegalArgumentException due to invalid date format
     }
 
@@ -71,9 +71,9 @@ public class PersonTest {
 
     @Test
     public void testSetAndGetGender() {
-        String newGender = "male";
+        String newGender = "Man";
         person.setGender(newGender);
-        assertEquals("setGender should update and getGender should return the new gender", newGender.toLowerCase(),
+        assertEquals("setGender should update and getGender should return the new gender", newGender,
                 person.getGender());
     }
 
@@ -92,7 +92,7 @@ public class PersonTest {
 
     @Test
     public void testSetAndGetPhoneNumber() {
-        String newPhoneNumber = "888-888-8888";
+        String newPhoneNumber = "888-8888";
         person.setPhoneNumber(newPhoneNumber);
         assertEquals("setPhoneNumber should update and getPhoneNumber should return the new phone number",
                 newPhoneNumber, person.getPhoneNumber());
@@ -107,14 +107,14 @@ public class PersonTest {
     }
 
     @Test
-    public void testGetAssignedSocialID() {
+    public void testGetASSIGNED_SOCIAL_ID() {
         // The next victim should have an ID one higher than the previous victim
         // Tests can be run in any order so two victims will be created
-        Person newPerson = new Person("Kash", "2025-01-21");
-        int expectedSocialId = newPerson.getAssignedSocialID() + 1;
-        Person actualVictim = new Person("Adeleke", "2025-01-22");
+        Person newPerson = new Person(2, "Kash", "2025-01-21");
+        int expectedSocialId = newPerson.getASSIGNED_SOCIAL_ID() + 1;
+        Person actualVictim = new Person(3, "Adeleke", "2025-01-22");
 
         assertEquals("getAssignedSocialID should return the expected social ID", expectedSocialId,
-                actualVictim.getAssignedSocialID());
+                actualVictim.getASSIGNED_SOCIAL_ID());
     }
 }
